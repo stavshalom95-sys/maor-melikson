@@ -3,8 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="698 משחקים, 74 שערים, 88 בישולים — הנתונים המלאים על קריירת מאור מליקסון | 2002–2020">
+<meta property="og:title" content="מאור מליקסון | קריירה מלאה — 698 משחקים">
+<meta property="og:description" content="698 משחקים, 74 שערים, 88 בישולים — הנתונים המלאים על קריירת מאור מליקסון">
+<meta property="og:url" content="https://maormelikson.vercel.app/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
 <title>מאור מליקסון | קריירה</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js">
+function shareMe(){
+  var url='https://maormelikson.vercel.app/';
+  if(navigator.share){navigator.share({title:'מאור מליקסון | קריירה',url:url});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(url);
+    var b=document.getElementById('shareBtn');
+    if(b){b.textContent='✅ הועתק';setTimeout(function(){b.textContent='🔗 שתף';},2000);}
+  }
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -116,6 +131,14 @@ tbody tr:last-child td{border-bottom:none}
 .cc{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:15px}
 .cc h3{font-size:10px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:13px}
 @media(max-width:720px){.hm{display:none}.tm.home{min-width:70px}.tm.away{min-width:70px}.tname{max-width:70px}}
+
+.btn-act{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:6px;cursor:pointer;font-size:13px;font-family:inherit}
+.btn-act:hover{background:var(--bg4);border-color:var(--acc)}
+@media print{
+  .hdr,.tabs,.hero,.flt-bar,.btn-act{display:none!important}
+  body{background:#fff;color:#000}
+  .card{box-shadow:none;border:1px solid #ccc}
+}
 </style>
 </head>
 <body>
@@ -126,6 +149,10 @@ tbody tr:last-child td{border-bottom:none}
       <button class="tab on" id="t-matches" onclick="switchTab('matches')">📋 משחקים</button>
       <button class="tab" id="t-insights" onclick="switchTab('insights')">📊 תובנות</button>
       <button class="tab" id="t-charts" onclick="switchTab('charts')">📈 גרפים</button>
+    </div>
+    <div style="margin-right:auto;display:flex;gap:6px">
+      <button class="btn-act" onclick="window.print()">🖨 הדפס</button>
+      <button class="btn-act" id="shareBtn" onclick="shareMe()">🔗 שתף</button>
     </div>
   </div>
 </header>
@@ -288,6 +315,107 @@ var LOGOS = {
   'הפועל רמת גן':{l:'https://upload.wikimedia.org/wikipedia/en/7/71/Hapoel_Ramat_Gan_logo.png',c:'#ef4444'},
   'ליברפול':{l:'https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg',c:'#ef4444'},
   'סלטיק':{l:'https://upload.wikimedia.org/wikipedia/en/7/71/Celtic_FC.svg',c:'#22c55e'},
+  'מכבי הרצליה':{l:'https://upload.wikimedia.org/wikipedia/en/5/50/Maccabi_Herzliya_FC.png',c:'#3b82f6'},
+  'הפועל ראשון לציון':{l:'https://upload.wikimedia.org/wikipedia/en/5/5e/Hapoel_Rishon_LeZion_FC.png',c:'#ef4444'},
+  'הפועל אשדוד':{l:'https://upload.wikimedia.org/wikipedia/en/1/13/Hapoel_Ashdod_FC.png',c:'#ef4444'},
+  'הפועל עכו':{l:'https://upload.wikimedia.org/wikipedia/en/4/43/Hapoel_Acre_FC.png',c:'#ef4444'},
+  'הפועל רעננה':{l:'https://upload.wikimedia.org/wikipedia/en/7/77/Hapoel_Raanana_AFC.png',c:'#ef4444'},
+  'נצרת עילית':{l:'https://upload.wikimedia.org/wikipedia/en/d/d9/Hapoel_Nof_HaGalil_logo.png',c:'#ef4444'},
+  'הפועל נצרת עילית':{l:'https://upload.wikimedia.org/wikipedia/en/d/d9/Hapoel_Nof_HaGalil_logo.png',c:'#ef4444'},
+  'בני לוד':{l:'https://upload.wikimedia.org/wikipedia/en/6/66/Bnei_Lod_FC.png',c:'#f97316'},
+  'הכח רמת השרון':{l:'https://upload.wikimedia.org/wikipedia/en/4/47/HaKoah_Ramat_HaSharon_FC.png',c:'#1f6feb'},
+  'הפועל אשקלון':{l:'https://upload.wikimedia.org/wikipedia/en/a/a5/Hapoel_Ashkelon_FC_logo.png',c:'#ef4444'},
+  'הכח עמידר רמת גן':{l:'https://upload.wikimedia.org/wikipedia/en/a/a7/Hakoah_Amidar_Ramat_Gan_FC.png',c:'#3b82f6'},
+  'מ.ס. אשדוד':{l:'https://upload.wikimedia.org/wikipedia/en/7/74/MS_Ashdod_logo.svg',c:'#3b82f6'},
+  'שמשון תל אביב':{l:'https://upload.wikimedia.org/wikipedia/en/1/17/Shimshon_Tel_Aviv_FC.png',c:'#f59e0b'},
+  'אירוני נצרת':{l:'https://upload.wikimedia.org/wikipedia/en/8/82/Maccabi_Ahi_Nazareth_FC.png',c:'#22c55e'},
+  'לגיה ורשה':{l:'https://upload.wikimedia.org/wikipedia/en/0/0b/Legia_Warsaw_logo.svg',c:'#22c55e'},
+  'לך פוזנאן':{l:'https://upload.wikimedia.org/wikipedia/en/e/e3/KKS_Lech_Poznan_logo.svg',c:'#1f6feb'},
+  'זגלביה לובין':{l:'https://upload.wikimedia.org/wikipedia/en/2/21/KGHM_Zaglebie_Lubin_logo.svg',c:'#22c55e'},
+  'פוגון סצ'ין':{l:'https://upload.wikimedia.org/wikipedia/en/e/e2/Pogon_Szczecin_logo.svg',c:'#dc2626'},
+  'ארקה גדיניה':{l:'https://upload.wikimedia.org/wikipedia/en/1/1a/Arka_Gdynia_logo.svg',c:'#f59e0b'},
+  'קראקוביה':{l:'https://upload.wikimedia.org/wikipedia/en/9/9e/KS_Cracovia.svg',c:'#dc2626'},
+  'סלאשק וורוצלב':{l:'https://upload.wikimedia.org/wikipedia/en/5/58/Slask_Wroclaw_logo.svg',c:'#22c55e'},
+  'רוך חוזוב':{l:'https://upload.wikimedia.org/wikipedia/en/c/c0/Ruch_Chorzow_logo.svg',c:'#1f6feb'},
+  'פיאסט גליצה':{l:'https://upload.wikimedia.org/wikipedia/en/d/da/Piast_Gliwice_logo.svg',c:'#3b82f6'},
+  'לכיה גדנסק':{l:'https://upload.wikimedia.org/wikipedia/en/f/f9/Lechia_Gdansk_logo.svg',c:'#3b82f6'},
+  'פולוניה ורשה':{l:'https://upload.wikimedia.org/wikipedia/en/4/47/Polonia_Warsaw_logo.svg',c:'#dc2626'},
+  'קורונה קיילצה':{l:'https://upload.wikimedia.org/wikipedia/en/0/05/Korona_Kielce_logo.svg',c:'#f59e0b'},
+  'וורטה פוזנאן':{l:'https://upload.wikimedia.org/wikipedia/en/4/41/Warta_Poznan.png',c:'#22c55e'},
+  'ביאליסטוק':{l:'https://upload.wikimedia.org/wikipedia/en/5/5c/Jagiellonia_Bialystok_logo.svg',c:'#f59e0b'},
+  'ג'אגיילוניה ביאליסטוק':{l:'https://upload.wikimedia.org/wikipedia/en/5/5c/Jagiellonia_Bialystok_logo.svg',c:'#f59e0b'},
+  'טרנובסקה גורה':{l:'https://upload.wikimedia.org/wikipedia/en/4/4d/GKS_Tychy_logo.svg',c:'#1f6feb'},
+  'נקה':{l:'https://upload.wikimedia.org/wikipedia/en/3/37/Nieciecza_logo.png',c:'#22c55e'},
+  'טולוז':{l:'https://upload.wikimedia.org/wikipedia/en/d/d5/Toulouse_FC_Logo.svg',c:'#8b5cf6'},
+  'ניס':{l:'https://upload.wikimedia.org/wikipedia/en/b/bc/OGC_Nice_logo.svg',c:'#dc2626'},
+  'לוריינט':{l:'https://upload.wikimedia.org/wikipedia/en/f/f8/Logo_FC_Lorient.svg',c:'#f97316'},
+  'ריימס':{l:'https://upload.wikimedia.org/wikipedia/en/5/57/Stade_de_Reims_logo.svg',c:'#dc2626'},
+  'נאנט':{l:'https://upload.wikimedia.org/wikipedia/en/7/71/FC_Nantes_logo.svg',c:'#f59e0b'},
+  'מארסיי':{l:'https://upload.wikimedia.org/wikipedia/en/d/d8/Olympique_Marseille_logo.svg',c:'#1f6feb'},
+  'מונפלייה':{l:'https://upload.wikimedia.org/wikipedia/en/8/84/Montpellier_H%C3%A9rault_Sport_Club_logo.svg',c:'#f97316'},
+  'ליון':{l:'https://upload.wikimedia.org/wikipedia/en/e/e2/Olympique_Lyonnais_logo.svg',c:'#1f6feb'},
+  'ליל':{l:'https://upload.wikimedia.org/wikipedia/en/6/62/Lille_OSC_2011_logo.svg',c:'#dc2626'},
+  'סנט אטיין':{l:'https://upload.wikimedia.org/wikipedia/en/1/14/AS_Saint-%C3%89tienne.svg',c:'#22c55e'},
+  'בורדו':{l:'https://upload.wikimedia.org/wikipedia/en/2/25/Girondins_de_Bordeaux_logo.svg',c:'#3b82f6'},
+  'ראן':{l:'https://upload.wikimedia.org/wikipedia/en/9/96/Stade_Rennais_FC.svg',c:'#dc2626'},
+  'מונאקו':{l:'https://upload.wikimedia.org/wikipedia/en/e/ea/AS_Monaco_FC.svg',c:'#dc2626'},
+  'סושו':{l:'https://upload.wikimedia.org/wikipedia/en/f/fb/FC_Sochaux-Montb%C3%A9liard_logo.svg',c:'#f59e0b'},
+  'נאנסי':{l:'https://upload.wikimedia.org/wikipedia/en/5/53/AS_Nancy_Lorraine_2013.svg',c:'#dc2626'},
+  'ברסט':{l:'https://upload.wikimedia.org/wikipedia/en/9/96/Stade_Brestois_29_logo.svg',c:'#dc2626'},
+  'פאריס סן ז'רמן':{l:'https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg',c:'#1f6feb'},
+  'פ.ס.ז'.':{l:'https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg',c:'#1f6feb'},
+  'אז'קסיו':{l:'https://upload.wikimedia.org/wikipedia/en/c/c3/AC_Ajaccio_logo.svg',c:'#dc2626'},
+  'אוליימפיקוס':{l:'https://upload.wikimedia.org/wikipedia/en/0/0f/Olympiacos_FC_logo.svg',c:'#dc2626'},
+  'אולימפיאקוס':{l:'https://upload.wikimedia.org/wikipedia/en/0/0f/Olympiacos_FC_logo.svg',c:'#dc2626'},
+  'דינמו זאגרב':{l:'https://upload.wikimedia.org/wikipedia/en/0/0b/GNK_Dinamo_Zagreb.svg',c:'#1f6feb'},
+  'בשיקטאש':{l:'https://upload.wikimedia.org/wikipedia/en/9/93/Besiktas_JK_logo.svg',c:'#1f6feb'},
+  'ויקטוריה פלזן':{l:'https://upload.wikimedia.org/wikipedia/en/c/c2/FC_Viktoria_Plzen_logo.svg',c:'#dc2626'},
+  'מאריבור':{l:'https://upload.wikimedia.org/wikipedia/en/0/01/NK_Maribor_logo.svg',c:'#8b5cf6'},
+  'ספרטה פראג':{l:'https://upload.wikimedia.org/wikipedia/en/a/a7/AC_Sparta_Prague_logo.svg',c:'#dc2626'},
+  'פרטיזן בלגראד':{l:'https://upload.wikimedia.org/wikipedia/en/3/3f/FK_Partizan_crest.svg',c:'#1f6feb'},
+  'שריף טיראספול':{l:'https://upload.wikimedia.org/wikipedia/en/2/20/FC_Sheriff_Tiraspol_logo.svg',c:'#f59e0b'},
+  'אינטר מילאן':{l:'https://upload.wikimedia.org/wikipedia/commons/0/05/FC_Internazionale_Milano_2021.svg',c:'#1f6feb'},
+  'אספניול':{l:'https://upload.wikimedia.org/wikipedia/en/7/76/RCD_Espanyol_logo.svg',c:'#1f6feb'},
+  'אפואל ניקוסיה':{l:'https://upload.wikimedia.org/wikipedia/en/9/94/APOEL_FC_logo.svg',c:'#f59e0b'},
+  'טוונטה':{l:'https://upload.wikimedia.org/wikipedia/en/5/5f/FC_Twente.svg',c:'#dc2626'},
+  'גלאזגו ריינג'רס':{l:'https://upload.wikimedia.org/wikipedia/en/a/a6/Rangers_FC_logo_2.svg',c:'#1f6feb'},
+  'ריינג'רס':{l:'https://upload.wikimedia.org/wikipedia/en/a/a6/Rangers_FC_logo_2.svg',c:'#1f6feb'},
+  'ליבורנו':{l:'https://upload.wikimedia.org/wikipedia/en/c/cd/AS_Livorno_Calcio.svg',c:'#ef4444'},
+  'אודנסה':{l:'https://upload.wikimedia.org/wikipedia/en/5/56/Odense_BK_logo.svg',c:'#1f6feb'},
+  'גאנגף':{l:'https://upload.wikimedia.org/wikipedia/en/d/d5/IF_Djurgarden_logo.svg',c:'#1f6feb'},
+  'נבחרת ישראל עד 19':{l:'https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Israel.svg',c:'#1f6feb'},
+  'נבחרת ישראל עד 21':{l:'https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Israel.svg',c:'#1f6feb'},
+  'נבחרת אזרביג'אן עד 19':{l:'https://upload.wikimedia.org/wikipedia/commons/d/dd/Flag_of_Azerbaijan.svg',c:'#22c55e'},
+  'נבחרת סן מרינו עד 19':{l:'https://upload.wikimedia.org/wikipedia/commons/b/b1/Flag_of_San_Marino.svg',c:'#1f6feb'},
+  'נבחרת מלטה עד 19':{l:'https://upload.wikimedia.org/wikipedia/commons/7/73/Flag_of_Malta.svg',c:'#dc2626'},
+  'נבחרת רומניה עד 19':{l:'https://upload.wikimedia.org/wikipedia/commons/7/73/Flag_of_Romania.svg',c:'#f59e0b'},
+  'נבחרת אוקראינה עד 19':{l:'https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg',c:'#f59e0b'},
+  'נבחרת גיאורגיה עד 19':{l:'https://upload.wikimedia.org/wikipedia/commons/0/0f/Flag_of_Georgia.svg',c:'#dc2626'},
+  'נבחרת ספרד עד 19':{l:'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg',c:'#dc2626'},
+  'נבחרת פורטוגל עד 19':{l:'https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg',c:'#22c55e'},
+  'נבחרת פולין עד 19':{l:'https://upload.wikimedia.org/wikipedia/en/1/12/Flag_of_Poland.svg',c:'#dc2626'},
+  'נבחרת גרמניה עד 19':{l:'https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg',c:'#f59e0b'},
+  'נבחרת ב'לגיה עד 19':{l:'https://upload.wikimedia.org/wikipedia/commons/6/65/Flag_of_Belgium.svg',c:'#dc2626'},
+  'נבחרת הונגריה':{l:'https://upload.wikimedia.org/wikipedia/commons/c/c1/Flag_of_Hungary.svg',c:'#22c55e'},
+  'נבחרת פינלנד':{l:'https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_Finland.svg',c:'#1f6feb'},
+  'נבחרת לוקסמבורג':{l:'https://upload.wikimedia.org/wikipedia/commons/d/da/Flag_of_Luxembourg.svg',c:'#ef4444'},
+  'נבחרת סלובניה':{l:'https://upload.wikimedia.org/wikipedia/commons/f/f0/Flag_of_Slovenia.svg',c:'#3b82f6'},
+  'נבחרת בוסניה':{l:'https://upload.wikimedia.org/wikipedia/commons/b/bf/Flag_of_Bosnia_and_Herzegovina.svg',c:'#f59e0b'},
+  'נבחרת קזחסטן':{l:'https://upload.wikimedia.org/wikipedia/commons/d/d3/Flag_of_Kazakhstan.svg',c:'#22c55e'},
+  'נבחרת לטביה':{l:'https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Latvia.svg',c:'#dc2626'},
+  'נבחרת ליטא':{l:'https://upload.wikimedia.org/wikipedia/commons/1/11/Flag_of_Lithuania.svg',c:'#f59e0b'},
+  'נבחרת פרו':{l:'https://upload.wikimedia.org/wikipedia/commons/c/cf/Flag_of_Peru.svg',c:'#dc2626'},
+  'נבחרת גאנה':{l:'https://upload.wikimedia.org/wikipedia/commons/1/19/Flag_of_Ghana.svg',c:'#22c55e'},
+  'נבחרת קוסטה ריקה':{l:'https://upload.wikimedia.org/wikipedia/commons/f/f2/Flag_of_Costa_Rica.svg',c:'#3b82f6'},
+  'נבחרת ניגריה':{l:'https://upload.wikimedia.org/wikipedia/commons/7/79/Flag_of_Nigeria.svg',c:'#22c55e'},
+  'נבחרת דנמרק':{l:'https://upload.wikimedia.org/wikipedia/commons/9/9c/Flag_of_Denmark.svg',c:'#dc2626'},
+  'נבחרת פולין':{l:'https://upload.wikimedia.org/wikipedia/en/1/12/Flag_of_Poland.svg',c:'#dc2626'},
+  'נבחרת יוון':{l:'https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Greece.svg',c:'#1f6feb'},
+  'נבחרת קרואטיה':{l:'https://upload.wikimedia.org/wikipedia/commons/1/1b/Flag_of_Croatia.svg',c:'#dc2626'},
+  'נבחרת רוסיה':{l:'https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg',c:'#dc2626'},
+  'נבחרת צ'כיה':{l:'https://upload.wikimedia.org/wikipedia/commons/c/cb/Flag_of_the_Czech_Republic.svg',c:'#dc2626'},
+  'נבחרת שוויץ':{l:'https://upload.wikimedia.org/wikipedia/commons/0/08/Flag_of_Switzerland_%28Pantone%29.svg',c:'#dc2626'},
+  'נבחרת בלגיה':{l:'https://upload.wikimedia.org/wikipedia/commons/6/65/Flag_of_Belgium.svg',c:'#dc2626'},
 };
 
 function tlogo(team,sz){
