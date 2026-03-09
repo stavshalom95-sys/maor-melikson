@@ -50,7 +50,7 @@ body{background:var(--bg);color:var(--text);font-family:'Heebo',sans-serif;direc
 .fc{padding:4px 9px;border-radius:14px;border:1px solid var(--border2);background:var(--bg3);color:var(--muted2);font-family:'Heebo',sans-serif;font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;transition:all .15s}
 .fc:hover{border-color:var(--acc2);color:var(--acc2)}
 .fc.on{background:rgba(31,111,235,.12);border-color:var(--acc2);color:var(--acc2);font-weight:600}
-.fc img{width:14px;height:14px;border-radius:3px;object-fit:contain;mix-blend-mode:multiply;flex-shrink:0}
+.fc img{width:14px;height:14px;object-fit:contain;flex-shrink:0}
 .tw{border-radius:10px;border:1px solid var(--border);overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13px}
 thead tr{background:var(--bg3);border-bottom:1px solid var(--border)}
@@ -72,7 +72,7 @@ tbody tr:last-child td{border-bottom:none}
 .scW{border-color:rgba(63,185,80,.4);color:var(--win)}
 .scD{border-color:rgba(210,153,34,.4);color:var(--draw)}
 .scL{border-color:rgba(248,81,73,.4);color:var(--loss)}
-.timg{width:20px;height:20px;object-fit:contain;border-radius:3px;mix-blend-mode:multiply;flex-shrink:0}
+.timg{width:20px;height:20px;object-fit:contain;flex-shrink:0}
 .tfb{width:20px;height:20px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;flex-shrink:0}
 .rb{width:23px;height:23px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
 .rbW{background:rgba(63,185,80,.15);color:var(--win)}
@@ -479,7 +479,7 @@ var MED=['p1','p2','p3','','','','','','',''];
 
 function mkClubCard(club,s){
   var wp=((s.w/s.n)*100).toFixed(0),dp=((s.d/s.n)*100).toFixed(0),lp=((s.l/s.n)*100).toFixed(0);
-  var lh=(LOGOS[club]&&LOGOS[club].l)?'<img src="'+LOGOS[club].l+'" width="16" height="16" style="border-radius:3px;mix-blend-mode:multiply;vertical-align:middle;margin-left:5px" onerror="this.style.display=\'none\'">':'';
+  var lh=(LOGOS[club]&&LOGOS[club].l)?'<img src="'+LOGOS[club].l+'" width="16" height="16" style="border-radius:3px;vertical-align:middle;margin-left:5px" onerror="this.style.display=\'none\'">':'';
   var seasons=s.seasons?Object.keys(s.seasons).sort().join(', '):'';
   return '<div class="ic"><h3>'+lh+club+'</h3>'+
     '<div class="wbar"><div class="wW" style="width:'+wp+'%"></div><div class="wD" style="width:'+dp+'%"></div><div class="wL" style="width:'+lp+'%"></div></div>'+
@@ -540,7 +540,7 @@ function buildIns(){
 
   // COACHES by most matches
   var cok2=Object.keys(cos).sort(function(a,b){return cos[b].n-cos[a].n;});
-  var coh2='';for(var i=0;i<Math.min(cok2.length,10);i++){var c=cok2[i],s=cos[c],pp=((s.w/s.n)*100).toFixed(0);var lh2=(LOGOS[s.club]&&LOGOS[s.club].l)?'<img src="'+LOGOS[s.club].l+'" width="13" height="13" style="border-radius:2px;mix-blend-mode:multiply;vertical-align:middle;margin-left:3px" onerror="this.style.display=\'none\'">':'';coh2+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+lh2+c+'</div><div class="tis">'+s.w+'נ '+s.d+'ת '+s.l+'ה · '+s.g+'⚽ '+s.a+'🎯</div></div><div class="bdg">'+s.n+'</div></div>';}
+  var coh2='';for(var i=0;i<Math.min(cok2.length,10);i++){var c=cok2[i],s=cos[c],pp=((s.w/s.n)*100).toFixed(0);var lh2=(LOGOS[s.club]&&LOGOS[s.club].l)?'<img src="'+LOGOS[s.club].l+'" width="13" height="13" style="border-radius:2px;vertical-align:middle;margin-left:3px" onerror="this.style.display=\'none\'">':'';coh2+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+lh2+c+'</div><div class="tis">'+s.w+'נ '+s.d+'ת '+s.l+'ה · '+s.g+'⚽ '+s.a+'🎯</div></div><div class="bdg">'+s.n+'</div></div>';}
   document.getElementById('ins-coaches2').innerHTML=coh2;
 
   // GOALS AGAINST WHOM
@@ -552,7 +552,7 @@ function buildIns(){
     goalsVs[op]=(goalsVs[op]||0)+1;
   }
   var gvk=Object.keys(goalsVs).sort(function(a,b){return goalsVs[b]-goalsVs[a];});
-  var gvh='';for(var i=0;i<Math.min(gvk.length,10);i++){var op=gvk[i];var lh=(LOGOS[op]&&LOGOS[op].l)?'<img src="'+LOGOS[op].l+'" width="14" height="14" style="border-radius:2px;mix-blend-mode:multiply;vertical-align:middle;margin-left:3px" onerror="this.style.display=\'none\'">':'';gvh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+lh+op+'</div></div><div class="bdg" style="color:var(--gc)">'+goalsVs[op]+'⚽</div></div>';}
+  var gvh='';for(var i=0;i<Math.min(gvk.length,10);i++){var op=gvk[i];var lh=(LOGOS[op]&&LOGOS[op].l)?'<img src="'+LOGOS[op].l+'" width="14" height="14" style="border-radius:2px;vertical-align:middle;margin-left:3px" onerror="this.style.display=\'none\'">':'';gvh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+lh+op+'</div></div><div class="bdg" style="color:var(--gc)">'+goalsVs[op]+'⚽</div></div>';}
   document.getElementById('ins-goalsvs').innerHTML=gvh;
 
   // ASSISTS TO WHOM (parse from action text)
@@ -587,7 +587,7 @@ function buildIns(){
     opps[op].n++;if(m.r==='W')opps[op].w++;else if(m.r==='D')opps[op].d++;else if(m.r==='L')opps[op].l++;
   }
   var ok=Object.keys(opps).sort(function(a,b){return opps[b].n-opps[a].n;});
-  var oh='';for(var i=0;i<Math.min(ok.length,12);i++){var op=ok[i],s=opps[op],pp=((s.w/s.n)*100).toFixed(0);var lh=(LOGOS[op]&&LOGOS[op].l)?'<img src="'+LOGOS[op].l+'" width="14" height="14" style="border-radius:2px;mix-blend-mode:multiply;vertical-align:middle;margin-left:3px" onerror="this.style.display=\'none\'">':'';oh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+lh+op+'</div><div class="tis">'+s.w+'נ '+s.d+'ת '+s.l+'ה</div></div><div style="display:flex;gap:5px;align-items:center"><div class="bdg">'+s.n+'</div><div class="bdg" style="color:var(--win);font-size:11px">'+pp+'%</div></div></div>';}
+  var oh='';for(var i=0;i<Math.min(ok.length,12);i++){var op=ok[i],s=opps[op],pp=((s.w/s.n)*100).toFixed(0);var lh=(LOGOS[op]&&LOGOS[op].l)?'<img src="'+LOGOS[op].l+'" width="14" height="14" style="border-radius:2px;vertical-align:middle;margin-left:3px" onerror="this.style.display=\'none\'">':'';oh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+lh+op+'</div><div class="tis">'+s.w+'נ '+s.d+'ת '+s.l+'ה</div></div><div style="display:flex;gap:5px;align-items:center"><div class="bdg">'+s.n+'</div><div class="bdg" style="color:var(--win);font-size:11px">'+pp+'%</div></div></div>';}
   document.getElementById('ins-opps').innerHTML=oh;
 
   // BY FRAMEWORK
@@ -631,7 +631,7 @@ function buildIns(){
   for(var i=0;i<ALL.length;i++){var m=ALL[i],s=m.s;if(!seas2[s])seas2[s]={n:0,w:0,d:0,l:0,g:0,a:0,club:m.mc};seas2[s].n++;if(m.r==='W')seas2[s].w++;else if(m.r==='D')seas2[s].d++;else if(m.r==='L')seas2[s].l++;if(m.g)seas2[s].g++;if(m.as)seas2[s].a++;}
   var sk2=Object.keys(seas2).sort();
   var sh2='';
-  for(var i=0;i<sk2.length;i++){var s=seas2[sk2[i]],pp=s.n>0?((s.w/s.n)*100).toFixed(0):0;var lh=(LOGOS[s.club]&&LOGOS[s.club].l)?'<img src="'+LOGOS[s.club].l+'" width="14" height="14" style="border-radius:2px;mix-blend-mode:multiply;vertical-align:middle;margin-left:4px" onerror="this.style.display=\'none\'">':'';sh2+='<div class="tr2"><div class="tii"><div class="tit">'+lh+sk2[i]+' · '+s.club+'</div><div class="tis">'+s.w+'נ '+s.d+'ת '+s.l+'ה</div></div><div style="display:flex;gap:5px"><div class="bdg">'+s.n+'</div><div class="bdg" style="color:var(--gc)">'+s.g+'⚽</div><div class="bdg" style="color:var(--ac)">'+s.a+'🎯</div></div></div>';}
+  for(var i=0;i<sk2.length;i++){var s=seas2[sk2[i]],pp=s.n>0?((s.w/s.n)*100).toFixed(0):0;var lh=(LOGOS[s.club]&&LOGOS[s.club].l)?'<img src="'+LOGOS[s.club].l+'" width="14" height="14" style="border-radius:2px;vertical-align:middle;margin-left:4px" onerror="this.style.display=\'none\'">':'';sh2+='<div class="tr2"><div class="tii"><div class="tit">'+lh+sk2[i]+' · '+s.club+'</div><div class="tis">'+s.w+'נ '+s.d+'ת '+s.l+'ה</div></div><div style="display:flex;gap:5px"><div class="bdg">'+s.n+'</div><div class="bdg" style="color:var(--gc)">'+s.g+'⚽</div><div class="bdg" style="color:var(--ac)">'+s.a+'🎯</div></div></div>';}
   document.getElementById('ins-seasons').innerHTML=sh2;
 }
 
