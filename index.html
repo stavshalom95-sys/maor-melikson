@@ -176,44 +176,52 @@ tbody tr:last-child td{border-bottom:none}
 
 /* ── Match Cards ─────────────────────────────────────── */
 .match-list{display:flex;flex-direction:column;gap:8px;padding:12px 16px}
+.gl-card-list{display:flex;flex-direction:column;gap:8px;padding:4px 16px}
 .match-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;
   padding:12px 14px;cursor:pointer;transition:border-color .15s,background .15s;
   animation:fadeUp .18s ease both}
+.match-card:active{transform:scale(.99)}
 .match-card:hover{background:var(--bg3)}
-.match-card.expanded{border-color:var(--acc2);background:var(--bg3)}
+.match-card.expanded{border-color:var(--acc2)}
 .match-card.mcW{border-right:3px solid var(--win)}
 .match-card.mcD{border-right:3px solid var(--draw)}
 .match-card.mcL{border-right:3px solid var(--loss)}
-.mc-top{display:flex;align-items:center;gap:10px}
-.mc-left{min-width:74px;text-align:right;flex-shrink:0}
-.mc-date{font-size:11px;color:var(--muted2);font-weight:600;line-height:1.4}
-.mc-szn{font-size:10px;color:var(--muted);margin:2px 0}
-.mc-body{flex:1;overflow:hidden;min-width:0}
-.mc-teams{display:flex;align-items:center;gap:6px}
-.mc-team{display:flex;align-items:center;gap:4px;flex:1;min-width:0}
-.mc-team.home{justify-content:flex-end}
-.mc-team.away{flex-direction:row-reverse;justify-content:flex-end}
-.mc-tn{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px}
-.mc-tn.bold{font-weight:800}
-.mc-sc{font-size:19px;font-weight:900;min-width:52px;text-align:center;flex-shrink:0}
+.mc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.mc-main{flex:1;min-width:0}
+.mc-result{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}
+.mc-sc{font-size:22px;font-weight:900;line-height:1}
 .mcW .mc-sc{color:var(--win)}
 .mcD .mc-sc{color:var(--draw)}
 .mcL .mc-sc{color:var(--loss)}
-.mc-sub{font-size:10px;color:var(--muted2);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mc-right{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:4px}
+.mc-ms{font-size:14px}
+.mc-trow{font-size:13px;font-weight:600;display:flex;align-items:center;gap:4px;
+  margin-bottom:4px;overflow:hidden}
+.mc-tn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px}
+.mc-tn.bold{font-weight:800}
+.mc-vs{color:var(--muted2);font-weight:400;flex-shrink:0;margin:0 2px;font-size:11px}
+.mc-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.mc-mi{font-size:11px;color:var(--muted2)}
+.mc-side{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:3px;min-width:56px}
+.mc-date{font-size:11px;color:var(--muted2);font-weight:600}
+.mc-exp{font-size:11px;color:var(--muted2);margin-top:2px}
 .mc-detail{display:none}
 .match-card.expanded .mc-detail{display:block;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
-.mc-dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px 12px}
-.mc-di{display:flex;flex-direction:column;gap:2px}
-.mc-dl{font-size:9px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.mc-dv{font-size:12px;font-weight:600;color:var(--text)}
+.mc-dgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mc-di{background:var(--bg3);border-radius:8px;padding:7px 10px}
+.mc-dl{font-size:10px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.mc-dv{font-size:12px;font-weight:700;color:var(--text);line-height:1.4}
+/* Insights collapse */
+.ins-collapse-btn{width:100%;margin-top:6px;background:var(--bg3);border:1px solid var(--border);
+  border-radius:6px;padding:5px 10px;font-size:11px;color:var(--muted2);cursor:pointer;
+  font-family:inherit;text-align:center;transition:.15s}
+.ins-collapse-btn:hover{background:var(--bg2);color:var(--text)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:720px){
   .match-list{padding:8px 10px;gap:6px}
+  .gl-card-list{padding:4px 10px}
   .match-card{padding:10px 12px;border-radius:10px}
-  .mc-tn{max-width:78px;font-size:12px}
-  .mc-sc{font-size:17px;min-width:44px}
-  .mc-left{min-width:62px}
+  .mc-sc{font-size:20px}
+  .mc-tn{max-width:80px;font-size:12px}
   .mc-date{font-size:10px}
   .mc-dgrid{grid-template-columns:1fr 1fr}
 }
@@ -592,8 +600,8 @@ var GOAL_EXTRA={
   '11/05/2019':{t:'',k:'Nigel Hasselbaink'},
 };
 var INJURIES=[
-  {s:'18/19',inj:'פגיעה בטבור (Herniated umbilical button)',from:'23/05/2019',until:'02/12/2019',days:194,missed:20},
-  {s:'18/19',inj:'נוקשות שרירים',from:'08/02/2019',until:'23/02/2019',days:16,missed:2},
+  {s:'18/19',inj:'פציעה בשרירי הבטן',from:'23/05/2019',until:'02/12/2019',days:194,missed:20},
+  {s:'18/19',inj:'מתיחת שרירים',from:'08/02/2019',until:'23/02/2019',days:16,missed:2},
   {s:'16/17',inj:'מכה (Knock)',from:'25/08/2016',until:'15/09/2016',days:22,missed:3},
   {s:'11/12',inj:'פגיעה ברגל',from:'26/09/2011',until:'21/11/2011',days:57,missed:11},
 ];
@@ -863,33 +871,28 @@ function draw(){
     var mc=m.r==='W'?'mcW':m.r==='L'?'mcL':m.r==='D'?'mcD':'';
     var rb=m.r==='W'?'<div class="rb rbW">נ</div>':m.r==='L'?'<div class="rb rbL">ה</div>':m.r==='D'?'<div class="rb rbD">ת</div>':'<div class="rb rbQ">?</div>';
     var fpc=FPC[m.fc]||'fpN';
-    var fans=m.fn>0?m.fn.toLocaleString():'-';
-    var ex=(m.g?'⚽ ':'')+(m.as?'🎯 ':'');
-    var hBold=m.ih, aBold=!m.ih&&m.mc!=='';
     var sc=m.sc||'–';
     var ms=MILESTONES[m.ts]||null;
+    var hBold=m.ih, aBold=!m.ih&&m.mc!=='';
     var epFans=m.fn>0?m.fn.toLocaleString()+' צופים':'—';
     var epGoal=(m.g?'<span style="color:var(--gc)">⚽ כבש שער</span>':'')+(m.as?'<span style="color:var(--ac)"> 🎯 בישל</span>':'');
     html+='<div class="match-card '+mc+'" id="mc-'+rid+'" onclick="toggleRow(\''+rid+'\')">';
     html+='<div class="mc-top">';
-    html+='<div class="mc-left">';
-    html+='<div class="mc-date">'+(ms?'🏅 ':'')+m.d+'</div>';
-    html+='<div class="mc-szn">'+m.s+'</div>';
-    html+='<span class="fp '+fpc+'" style="font-size:10px;padding:1px 5px">'+(m.fc||'')+'</span>';
+    html+='<div class="mc-main">';
+    html+='<div class="mc-result"><span class="mc-sc">'+sc+'</span>'+rb+(ms?'<span class="mc-ms">🏅</span>':'')+'</div>';
+    html+='<div class="mc-trow">'+tlogo(m.h,16)+'<span class="mc-tn'+(hBold?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(aBold?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,16)+'</div>';
+    var metaParts=[];
+    if(m.st)metaParts.push('📍 '+m.st);
+    if(m.md)metaParts.push('מ\' '+m.md);
+    if(m.g||m.as){var ach='';if(m.g)ach+='⚽';if(m.as)ach+=' 🎯';metaParts.push(ach.trim());}
+    if(metaParts.length)html+='<div class="mc-meta">'+metaParts.map(function(p){return'<span class="mc-mi">'+p+'</span>';}).join('')+'</div>';
     html+='</div>';
-    html+='<div class="mc-body">';
-    html+='<div class="mc-teams">';
-    html+='<div class="mc-team home">'+tlogo(m.h,16)+'<span class="mc-tn'+(hBold?' bold':'')+'">'+m.h+'</span></div>';
-    html+='<div class="mc-sc">'+sc+'</div>';
-    html+='<div class="mc-team away"><span class="mc-tn'+(aBold?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,16)+'</div>';
+    html+='<div class="mc-side">';
+    html+='<div class="mc-date">'+m.d+'</div>';
+    html+='<div style="font-size:10px;color:var(--muted)">'+m.s+'</div>';
+    html+='<span class="fp '+fpc+'" style="font-size:10px;padding:2px 6px">'+(m.fc||'')+'</span>';
+    html+='<div class="mc-exp">▾</div>';
     html+='</div>';
-    var subParts=[];
-    if(m.st)subParts.push(m.st);
-    if(m.md)subParts.push('מחזור '+m.md);
-    if(ex.trim())subParts.push(ex.trim());
-    if(subParts.length)html+='<div class="mc-sub">'+subParts.join(' · ')+'</div>';
-    html+='</div>';
-    html+='<div class="mc-right">'+rb+'</div>';
     html+='</div>';
     html+='<div class="mc-detail" id="exp-'+rid+'">';
     html+='<div class="mc-dgrid">';
@@ -901,7 +904,7 @@ function draw(){
     html+='<div class="mc-di"><div class="mc-dl">שופט</div><div class="mc-dv">'+(m.rf||'—')+'</div></div>';
     html+='<div class="mc-di"><div class="mc-dl">מאמן</div><div class="mc-dv">'+(m.co||'—')+'</div></div>';
     if(epGoal)html+='<div class="mc-di" style="grid-column:1/-1"><div class="mc-dl">הישגים</div><div class="mc-dv">'+epGoal+'</div></div>';
-    if(ms)html+='<div class="mc-di" style="grid-column:1/-1;background:rgba(227,179,65,.08);border-radius:6px;padding:6px"><div class="mc-dl" style="color:var(--draw)">🏅 אבן דרך</div><div class="mc-dv" style="color:var(--draw);font-weight:700">'+ms.join(' · ')+'</div></div>';
+    if(ms)html+='<div class="mc-di" style="grid-column:1/-1;background:rgba(227,179,65,.1);border:1px solid rgba(227,179,65,.2)"><div class="mc-dl" style="color:var(--draw)">🏅 אבן דרך</div><div class="mc-dv" style="color:var(--draw)">'+ms.join(' · ')+'</div></div>';
     html+='<div class="mc-di" style="grid-column:1/-1"><div class="mc-dl">מה עשה</div><div class="mc-dv">'+(m.ac||'—')+'</div></div>';
     html+='</div></div></div>';
   }
@@ -910,10 +913,10 @@ function draw(){
   document.getElementById('inf1').textContent=inf;
   document.getElementById('inf2').textContent=inf;
   var ph='';
-  if(page>1)ph+='<button onclick="pg('+(page-1)+')">&#9668;</button>';
+  if(page>1)ph+='<button onclick="pg('+(page-1)+')">◄</button>';
   var ps=Math.max(1,page-2),pe=Math.min(pages,page+2);
-  for(var p=ps;p<=pe;p++)ph+='<button class="'+(p===page?'cur':'')+'" onclick="pg('+p+')">'+p+'</button>';
-  if(page<pages)ph+='<button onclick="pg('+(page+1)+')">&#9658;</button>';
+  for(var p=ps;p<=pe;p++){var cc=p===page?'cur':'';ph+='<button class="'+cc+'" onclick="pg('+p+')">'+p+'</button>';}
+  if(page<pages)ph+='<button onclick="pg('+(page+1)+')">►</button>';
   document.getElementById('pn1').innerHTML=ph;
   document.getElementById('pn2').innerHTML=ph;
 }
@@ -943,7 +946,7 @@ function switchTab(name){
   });
   document.getElementById('p-'+name).classList.add('on');
   document.getElementById('t-'+name).classList.add('on');
-  if(name==='insights'&&!window._ins){buildIns();window._ins=1;}
+  if(name==='insights'&&!window._ins){buildIns();initInsCollapse();window._ins=1;}
   if(name==='charts'&&!window._ch){buildCh();window._ch=1;}
   if(name==='goals'&&!window._gl){buildGoals();window._gl=1;}
   if(name==='assists'&&!window._as){buildAssists();window._as=1;}
@@ -1022,16 +1025,16 @@ function renderGoals(){
   var gTot=goals.length,gPages=Math.ceil(gTot/gPer)||1;
   if(gPage>gPages)gPage=gPages;
   var gS0=(gPage-1)*gPer;
+  var allGoalsForSummary=goals.slice();
   goals=goals.slice(gS0,gS0+gPer);
   var html='<div class="gl-info" style="font-size:11px;color:var(--muted2);margin-bottom:6px">מציג '+(gS0+1)+'–'+Math.min(gS0+gPer,gTot)+' מתוך '+gTot+' שערים</div>';
-  html+='<div class="tw"><table><thead><tr><th>תאריך</th><th>משחק</th><th>תוצאה</th><th class="hm">מפעל</th><th class="hm">סוג</th><th class="hm">שוער</th></tr></thead><tbody>';
+  html+='<div class="gl-card-list">';
   for(var i=0;i<goals.length;i++){
     var m=goals[i];
     var gid='g'+i;
-    var rc=m.r==='W'?'rW':m.r==='L'?'rL':m.r==='D'?'rD':'';
-    var fpc=FPC[m.fc]||'fpN';
-    var scCls='scbx'+(m.r==='W'?' scW':m.r==='D'?' scD':m.r==='L'?' scL':'');
+    var mc=m.r==='W'?'mcW':m.r==='L'?'mcL':m.r==='D'?'mcD':'';
     var rb=m.r==='W'?'<div class="rb rbW">נ</div>':m.r==='L'?'<div class="rb rbL">ה</div>':m.r==='D'?'<div class="rb rbD">ת</div>':'<div class="rb rbQ">?</div>';
+    var fpc=FPC[m.fc]||'fpN';
     var gbadge=goalTypeBadge(m.d,m.ac||'');
     var gi2=parseGoalInfo(m.ac||'');
     if(!gbadge){
@@ -1040,100 +1043,81 @@ function renderGoals(){
     }
     var gk=goalKeeper(m.d);
     var fans=m.fn>0?m.fn.toLocaleString():'—';
-    html+='<tr class="mrow '+rc+'" onclick="toggleRow(\''+gid+'\')">';
-    html+='<td style="font-size:12px;color:var(--muted2)">'+m.d+'</td>';
-    html+='<td><div class="match-cell">';
-    html+='<div class="tm home">'+tlogo(m.h,16)+'<span class="tname'+(m.ih?' bold':'')+'">'+m.h+'</span></div>';
-    html+='<div class="'+scCls+'">'+m.sc+'</div>';
-    html+='<div class="tm away"><span class="tname'+(!m.ih?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,16)+'</div>';
-    html+='</div></td>';
-    html+='<td>'+rb+'</td>';
-    html+='<td class="hm"><span class="fp '+fpc+'">'+m.fc+'</span></td>';
-    html+='<td class="hm" style="font-size:12px">'+gbadge+'</td>';
-    html+='<td class="hm" style="font-size:11px;color:var(--muted2)">'+(gk||'—')+'</td>';
-    html+='</tr>';
-    html+='<tr class="erow" id="exp-'+gid+'" style="display:none">';
-    html+='<td colspan="6"><div class="ep">';
-    html+='<div class="ep-i"><div class="ep-l">מחזור</div><div class="ep-v">'+(m.md||'—')+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">עונה</div><div class="ep-v">'+m.s+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">תחרות מלאה</div><div class="ep-v">'+m.fw+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">אצטדיון</div><div class="ep-v">'+(m.st||'—')+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">קהל</div><div class="ep-v">'+fans+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">🧤 שוער</div><div class="ep-v" style="color:var(--muted2)">'+(gk||'—')+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">שופט</div><div class="ep-v">'+(m.rf||'—')+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">מאמן</div><div class="ep-v">'+(m.co||'—')+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">סוג</div><div class="ep-v">'+gbadge+'</div></div>';
-    html+='<div class="ep-i ep-ac"><div class="ep-l">מה עשה</div><div class="ep-v">'+(m.ac||'—')+'</div></div>';
-    html+='</div></td>';
-    html+='</tr>';
+    html+='<div class="match-card '+mc+'" id="mc-'+gid+'" onclick="toggleRow(\''+gid+'\')">';
+    html+='<div class="mc-top">';
+    html+='<div class="mc-main">';
+    html+='<div class="mc-result"><span class="mc-sc">'+m.sc+'</span>'+rb+'<span style="margin-right:4px">'+gbadge+'</span></div>';
+    html+='<div class="mc-trow">'+tlogo(m.h,16)+'<span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,16)+'</div>';
+    var gmeta=[];
+    if(m.st)gmeta.push('📍 '+m.st);
+    if(gk)gmeta.push('🧤 '+gk);
+    if(gmeta.length)html+='<div class="mc-meta">'+gmeta.map(function(p){return'<span class="mc-mi">'+p+'</span>';}).join('')+'</div>';
+    html+='</div>';
+    html+='<div class="mc-side">';
+    html+='<div class="mc-date">'+m.d+'</div>';
+    html+='<div style="font-size:10px;color:var(--muted)">'+m.s+'</div>';
+    html+='<span class="fp '+fpc+'" style="font-size:10px;padding:2px 6px">'+m.fc+'</span>';
+    html+='<div class="mc-exp">▾</div>';
+    html+='</div>';
+    html+='</div>';
+    html+='<div class="mc-detail" id="exp-'+gid+'">';
+    html+='<div class="mc-dgrid">';
+    html+='<div class="mc-di"><div class="mc-dl">מחזור</div><div class="mc-dv">'+(m.md||'—')+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">עונה</div><div class="mc-dv">'+m.s+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">תחרות</div><div class="mc-dv">'+m.fw+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">קהל</div><div class="mc-dv">'+fans+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">🧤 שוער</div><div class="mc-dv" style="color:var(--muted2)">'+(gk||'—')+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">שופט</div><div class="mc-dv">'+(m.rf||'—')+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">מאמן</div><div class="mc-dv">'+(m.co||'—')+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">סוג</div><div class="mc-dv">'+gbadge+'</div></div>';
+    html+='<div class="mc-di" style="grid-column:1/-1"><div class="mc-dl">מה עשה</div><div class="mc-dv">'+(m.ac||'—')+'</div></div>';
+    html+='</div></div></div>';
   }
-  html+='</tbody></table></div>';
+  html+='</div>';
   var gvSum={};
-  for(var gi3=0;gi3<goals.length;gi3++){var op=goals[gi3].ih?goals[gi3].a:goals[gi3].h;if(op&&op!==goals[gi3].mc)gvSum[op]=(gvSum[op]||0)+1;}
+  for(var gi3=0;gi3<allGoalsForSummary.length;gi3++){var op=allGoalsForSummary[gi3].ih?allGoalsForSummary[gi3].a:allGoalsForSummary[gi3].h;if(op&&op!==allGoalsForSummary[gi3].mc)gvSum[op]=(gvSum[op]||0)+1;}
   var gvk2=Object.keys(gvSum).sort(function(a,b){return gvSum[b]-gvSum[a];});
   var summHtml='<div class="st" style="margin:20px 0 10px">📊 שערים לפי יריב</div><div class="tw"><table><thead><tr><th>#</th><th>יריב</th><th>שערים</th></tr></thead><tbody>';
-  for(var si=0;si<gvk2.length;si++){
-    var op2=gvk2[si];var lm2=LOGOS[op2];var li2=lm2&&lm2.l?'<img src="'+lm2.l+'" width="16" height="16" style="vertical-align:middle;margin-left:4px" onerror="this.style.display=\'none\'">':'';
-    summHtml+='<tr><td style="color:var(--muted2);text-align:center">'+(si+1)+'</td><td>'+li2+op2+'</td><td style="color:var(--gc);font-weight:700;text-align:center">'+gvSum[op2]+'</td></tr>';
-  }
+  for(var si=0;si<gvk2.length;si++){var op2=gvk2[si];var lm2=LOGOS[op2];var li2=lm2&&lm2.l?'<img src="'+lm2.l+'" width="16" height="16" style="vertical-align:middle;margin-left:4px" onerror="this.style.display=\'none\'">':'';summHtml+='<tr><td style="color:var(--muted2);text-align:center">'+(si+1)+'</td><td>'+li2+op2+'</td><td style="color:var(--gc);font-weight:700;text-align:center">'+gvSum[op2]+'</td></tr>';}
   summHtml+='</tbody></table></div>';
   document.getElementById('goal-grid').innerHTML=html+'<div id="goal-summary">'+summHtml+'</div>';
   document.getElementById('goal-summary').style.display=(gfType==='all'&&gfFc==='all')?'block':'none';
   var gph='';
   if(gPage>1)gph+='<button class="pn-btn" onclick="gPg('+(gPage-1)+')">◄</button>';
   var gps2=Math.max(1,gPage-2),gpe2=Math.min(gPages,gPage+2);
-  for(var gpi=gps2;gpi<=gpe2;gpi++)gph+='<button class="pn-btn'+(gpi===gPage?' cur':'')
-    +'" onclick="gPg('+gpi+')">'+gpi+'</button>';
+  for(var gpi=gps2;gpi<=gpe2;gpi++){var gc=gpi===gPage?'pn-btn cur':'pn-btn';gph+='<button class="'+gc+'" onclick="gPg('+gpi+')">'+gpi+'</button>';}
   if(gPage<gPages)gph+='<button class="pn-btn" onclick="gPg('+(gPage+1)+')">►</button>';
   document.getElementById('goal-pn').innerHTML=gph;
 }
 
-/* ── Row expand ─────────────────────────────────────────── */
-function toggleRow(rid){
-  var card=document.getElementById('mc-'+rid);
-  if(card){card.classList.toggle('expanded');window.scrollTo({top:card.getBoundingClientRect().top+window.scrollY-80,behavior:'smooth'});}
-}
 
-/* ── Assists tab ─────────────────────────────────────────── */
-var afFc='all';
+/* ── Assists tab ──────────────────────────────────────────── */
+var _allAssists=null,afFc="all";
 function setAF(el){aPage=1;
-  document.querySelectorAll('[data-af="fc"]').forEach(function(b){b.classList.remove('on');});
-  el.classList.add('on');
-  afFc=el.getAttribute('data-av');
+  afFc=el.getAttribute("data-av");
+  document.querySelectorAll("[data-af]").forEach(function(b){b.classList.remove("on");});
+  el.classList.add("on");
   renderAssists();
 }
-
 function parseAssistTargets(ac){
-  if(!ac)return[];
   var res=[];
-  var matches=ac.match(/בישול[ים]*\(([^)]+)\)/g);
-  if(matches){
-    for(var i=0;i<matches.length;i++){
-      var inner=matches[i].replace(/בישול[ים]*\(/,'').replace(')','');
-      var parts=inner.split(/[+,]/);
-      for(var j=0;j<parts.length;j++){
-        var nm=parts[j].replace(/^\d+\s*/,'').trim();
-        if(nm&&nm.length>1&&nm!=='שער עצמי')res.push(nm);
-      }
-    }
-  }
+  var m=ac.match(/בישול[ים]*\(([^)]+)\)/g);
+  if(m){for(var i=0;i<m.length;i++){var inner=m[i].replace(/בישול[ים]*\(/,"").replace(")","");var names=inner.split(/[+,]/);for(var j=0;j<names.length;j++){var nm=names[j].trim();if(nm&&nm.length>1)res.push(nm);}}}
   return res;
 }
-
-var _allAssists=null;
 function buildAssists(){
   _allAssists=ALL.filter(function(m){return m.as;}).sort(function(a,b){return b.ts-a.ts;});
   var targets={};
   for(var i=0;i<_allAssists.length;i++){
-    var tgts=parseAssistTargets(_allAssists[i].ac||'');
+    var tgts=parseAssistTargets(_allAssists[i].ac||"");
     for(var j=0;j<tgts.length;j++){if(tgts[j])targets[tgts[j]]=(targets[tgts[j]]||0)+1;}
   }
   var tk=Object.keys(targets).sort(function(a,b){return targets[b]-targets[a];});
-  var topT=tk[0]||'';
-  var kh='<div class="kpi"><div class="v" style="color:var(--ac)">'+_allAssists.length+'</div><div class="l">בישולים</div></div>';
-  kh+='<div class="kpi"><div class="v" style="color:var(--gc)">'+tk.length+'</div><div class="l">שחקנים שונים</div></div>';
-  if(topT)kh+='<div class="kpi" style="min-width:110px"><div class="v" style="font-size:12px;color:var(--win)">'+topT+'</div><div class="l">הכי הרבה ('+targets[topT]+')</div></div>';
-  document.getElementById('as-kpis').innerHTML=kh;
+  var topT=tk[0]||"";
+  var kh="<div class="kpi"><div class="v" style="color:var(--ac)">"+ _allAssists.length+"</div><div class="l">בישולים</div></div>";
+  kh+="<div class="kpi"><div class="v" style="color:var(--gc)">"+ tk.length+"</div><div class="l">שחקנים שונים</div></div>";
+  if(topT)kh+="<div class="kpi" style="min-width:110px"><div class="v" style="font-size:12px;color:var(--win)">"+ topT+"</div><div class="l">הכי הרבה ("+targets[topT]+")</div></div>";
+  document.getElementById("as-kpis").innerHTML=kh;
   renderAssists();
 }
 
@@ -1150,56 +1134,57 @@ function renderAssists(){
   var aS0=(aPage-1)*aPer;
   assists=assists.slice(aS0,aS0+aPer);
   var html='<div class="gl-info" style="font-size:11px;color:var(--muted2);margin-bottom:6px">מציג '+(aS0+1)+'–'+Math.min(aS0+aPer,aTot)+' מתוך '+aTot+' בישולים</div>';
-  html+='<div class="tw"><table><thead><tr><th>תאריך</th><th>משחק</th><th>תוצאה</th><th class="hm">מפעל</th><th class="hm">למי בישל</th></tr></thead><tbody>';
+  html+='<div class="gl-card-list">';
   for(var i=0;i<assists.length;i++){
     var m=assists[i];
     var aid='a'+i;
-    var rc=m.r==='W'?'rW':m.r==='L'?'rL':m.r==='D'?'rD':'';
-    var fpc=FPC[m.fc]||'fpN';
-    var scCls='scbx'+(m.r==='W'?' scW':m.r==='D'?' scD':m.r==='L'?' scL':'');
+    var mc=m.r==='W'?'mcW':m.r==='L'?'mcL':m.r==='D'?'mcD':'';
     var rb=m.r==='W'?'<div class="rb rbW">נ</div>':m.r==='L'?'<div class="rb rbL">ה</div>':m.r==='D'?'<div class="rb rbD">ת</div>':'<div class="rb rbQ">?</div>';
+    var fpc=FPC[m.fc]||'fpN';
     var tgts=parseAssistTargets(m.ac||'');
     var tgtsStr=tgts.join(', ')||'—';
     var fans=m.fn>0?m.fn.toLocaleString():'—';
     var asN=tgts.length>1?' ('+tgts.length+')':'';
     var abadge='<span class="gbdg" style="background:rgba(121,192,255,.1);color:#79c0ff;border:1px solid rgba(121,192,255,.3)">🎯 בישול'+asN+'</span>';
     if(m.g)abadge+=' <span class="gbdg gbdg-g">⚽</span>';
-    html+='<tr class="mrow '+rc+'" onclick="toggleRow(\''+aid+'\')">';
-    html+='<td style="font-size:12px;color:var(--muted2)">'+m.d+'</td>';
-    html+='<td><div class="match-cell">';
-    html+='<div class="tm home">'+tlogo(m.h,16)+'<span class="tname'+(m.ih?' bold':'')+'">'+m.h+'</span></div>';
-    html+='<div class="'+scCls+'">'+m.sc+'</div>';
-    html+='<div class="tm away"><span class="tname'+(!m.ih?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,16)+'</div>';
-    html+='</div></td>';
-    html+='<td>'+rb+'</td>';
-    html+='<td class="hm"><span class="fp '+fpc+'">'+m.fc+'</span></td>';
-    html+='<td class="hm" style="font-size:12px;color:var(--text)">'+tgtsStr+'</td>';
-    html+='</tr>';
-    html+='<tr class="erow" id="exp-'+aid+'" style="display:none">';
-    html+='<td colspan="5"><div class="ep">';
-    html+='<div class="ep-i"><div class="ep-l">מחזור</div><div class="ep-v">'+(m.md||'—')+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">עונה</div><div class="ep-v">'+m.s+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">תחרות מלאה</div><div class="ep-v">'+m.fw+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">אצטדיון</div><div class="ep-v">'+(m.st||'—')+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">קהל</div><div class="ep-v">'+fans+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">שופט</div><div class="ep-v">'+(m.rf||'—')+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">מאמן</div><div class="ep-v">'+(m.co||'—')+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">למי בישל</div><div class="ep-v" style="color:var(--ac)">'+tgtsStr+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">הישגים</div><div class="ep-v">'+abadge+'</div></div>';
-    html+='<div class="ep-i ep-ac"><div class="ep-l">מה עשה</div><div class="ep-v">'+(m.ac||'—')+'</div></div>';
-    html+='</div></td>';
-    html+='</tr>';
+    html+='<div class="match-card '+mc+'" id="mc-'+aid+'" onclick="toggleRow(\''+aid+'\')">';
+    html+='<div class="mc-top">';
+    html+='<div class="mc-main">';
+    html+='<div class="mc-result"><span class="mc-sc">'+m.sc+'</span>'+rb+'<span style="margin-right:4px">'+abadge+'</span></div>';
+    html+='<div class="mc-trow">'+tlogo(m.h,16)+'<span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,16)+'</div>';
+    var ameta=[];
+    if(m.st)ameta.push('📍 '+m.st);
+    if(tgtsStr&&tgtsStr!=='—')ameta.push('🎯 '+tgtsStr);
+    if(ameta.length)html+='<div class="mc-meta">'+ameta.map(function(p){return'<span class="mc-mi">'+p+'</span>';}).join('')+'</div>';
+    html+='</div>';
+    html+='<div class="mc-side">';
+    html+='<div class="mc-date">'+m.d+'</div>';
+    html+='<div style="font-size:10px;color:var(--muted)">'+m.s+'</div>';
+    html+='<span class="fp '+fpc+'" style="font-size:10px;padding:2px 6px">'+m.fc+'</span>';
+    html+='<div class="mc-exp">▾</div>';
+    html+='</div>';
+    html+='</div>';
+    html+='<div class="mc-detail" id="exp-'+aid+'">';
+    html+='<div class="mc-dgrid">';
+    html+='<div class="mc-di"><div class="mc-dl">מחזור</div><div class="mc-dv">'+(m.md||'—')+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">עונה</div><div class="mc-dv">'+m.s+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">תחרות</div><div class="mc-dv">'+m.fw+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">קהל</div><div class="mc-dv">'+fans+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">שופט</div><div class="mc-dv">'+(m.rf||'—')+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">מאמן</div><div class="mc-dv">'+(m.co||'—')+'</div></div>';
+    html+='<div class="mc-di" style="grid-column:1/-1"><div class="mc-dl">למי בישל</div><div class="mc-dv" style="color:var(--ac)">'+tgtsStr+'</div></div>';
+    html+='<div class="mc-di" style="grid-column:1/-1"><div class="mc-dl">מה עשה</div><div class="mc-dv">'+(m.ac||'—')+'</div></div>';
+    html+='</div></div></div>';
   }
-  html+='</tbody></table></div>';
+  html+='</div>';
   document.getElementById('assist-grid').innerHTML=html;
   var aph='';
   if(aPage>1)aph+='<button class="pn-btn" onclick="aPg('+(aPage-1)+')">◄</button>';
   var aps=Math.max(1,aPage-2),ape=Math.min(aPages,aPage+2);
-  for(var api=aps;api<=ape;api++)aph+='<button class="pn-btn'+(api===aPage?' cur':'')+'" onclick="aPg('+api+')">'+api+'</button>';
+  for(var api=aps;api<=ape;api++){var ac2=api===aPage?'pn-btn cur':'pn-btn';aph+='<button class="'+ac2+'" onclick="aPg('+api+')">'+api+'</button>';}
   if(aPage<aPages)aph+='<button class="pn-btn" onclick="aPg('+(aPage+1)+')">►</button>';
   document.getElementById('assist-pn').innerHTML=aph;
 }
-
 
 
 /* ── Injuries tab ──────────────────────────────────────────── */
@@ -1460,6 +1445,38 @@ function buildIns(){
 
 
 /* ── Career Timeline ─────────────────────────────────────── */
+function initInsCollapse(){
+  var LIMIT=5;
+  var ids=['ins-stads','ins-stadp','ins-stadf','ins-refs','ins-coaches','ins-coaches2',
+           'ins-opps','ins-subout','ins-subin','ins-goalsvs','ins-assiststo',
+           'ins-fw','ins-months','ins-ha','ins-mins','ins-seasons'];
+  ids.forEach(function(id){
+    var el=document.getElementById(id);
+    if(!el)return;
+    var rows=el.querySelectorAll('.tr2');
+    if(rows.length<=LIMIT)return;
+    for(var i=LIMIT;i<rows.length;i++)rows[i].style.display='none';
+    var btn=document.createElement('button');
+    btn.className='ins-collapse-btn';
+    btn.setAttribute('data-expanded','0');
+    btn.setAttribute('data-id',id);
+    var extra=rows.length-LIMIT;
+    btn.textContent='הצג עוד ('+extra+' נוספים)';
+    btn.onclick=function(){
+      var tid=this.getAttribute('data-id');
+      var exp=this.getAttribute('data-expanded')==='1';
+      var tel=document.getElementById(tid);
+      if(!tel)return;
+      var trows=tel.querySelectorAll('.tr2');
+      for(var ti=LIMIT;ti<trows.length;ti++)trows[ti].style.display=exp?'none':'';
+      this.setAttribute('data-expanded',exp?'0':'1');
+      var ex2=trows.length-LIMIT;
+      this.textContent=exp?'הצג עוד ('+ex2+' נוספים)':'הצג פחות';
+    };
+    el.parentNode.insertBefore(btn, el.nextSibling);
+  });
+}
+
 function buildTimeline(){
   var clubs={};
   var sorted2=ALL.slice().sort(function(a,b){return a.ts-b.ts;});
