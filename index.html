@@ -195,9 +195,10 @@ tbody tr:last-child td{border-bottom:none}
 .mcL .mc-sc{color:var(--loss)}
 .mc-ms{font-size:13px;flex-shrink:0}
 .mc-trow{display:flex;align-items:center;gap:4px;margin-bottom:4px}
-.mc-teams-txt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:600}
+.mc-team-l,.mc-team-r{flex:1;min-width:0;display:flex;align-items:center;gap:3px}
+.mc-team-l .mc-tn,.mc-team-r .mc-tn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:600}
 .mc-tn.bold{font-weight:800}
-.mc-vs{color:var(--muted2);font-weight:400;margin:0 3px}
+.mc-vs{color:var(--muted2);font-weight:400;margin:0 2px;flex-shrink:0}
 .mc-badge-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:4px}
 .mc-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
 .mc-mi{font-size:11px;color:var(--muted2)}
@@ -284,7 +285,7 @@ tr.erow td{padding:0!important;border-bottom:1px solid var(--border)}
       <button class="tab" id="t-charts" onclick="switchTab('charts')">📈 גרפים</button>
       <button class="tab" id="t-trophies" onclick="switchTab('trophies')">🏆 תארים</button>
     </div>
-    <button onclick="shareTab()" style="background:rgba(88,166,255,.12);border:1px solid rgba(88,166,255,.3);color:#58a6ff;border-radius:6px;padding:5px 12px;cursor:pointer;font-family:inherit;font-size:12px">🔗 שתף</button><a href="https://wa.me/?text=%F0%9F%8F%86%20%D7%A7%D7%A8%D7%99%D7%90%D7%A8%D7%AA%20%D7%9E%D7%90%D7%95%D7%A8%20%D7%9E%D7%9C%D7%99%D7%A7%D7%A1%D7%95%D7%9F%20%E2%80%94%20698%20%D7%9E%D7%A9%D7%97%D7%A7%D7%99%D7%9D%2C%2077%20%D7%A9%D7%A2%D7%A8%D7%99%D7%9D%0Ahttps%3A%2F%2Fmaormelikson.vercel.app%2F" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);color:#25d366;border-radius:6px;padding:5px 12px;cursor:pointer;font-family:inherit;font-size:12px;text-decoration:none;margin-right:4px">💬 וואטסאפ</a>
+    <button onclick="shareTab()" style="background:rgba(88,166,255,.12);border:1px solid rgba(88,166,255,.3);color:#58a6ff;border-radius:6px;padding:5px 12px;cursor:pointer;font-family:inherit;font-size:12px">🔗 שתף</button><a href="https://wa.me/?text=%F0%9F%8F%86%20%D7%A7%D7%A8%D7%99%D7%99%D7%A8%D7%AA%20%D7%9E%D7%90%D7%95%D7%A8%20%D7%9E%D7%9C%D7%99%D7%A7%D7%A1%D7%95%D7%9F%20%E2%80%94%20698%20%D7%9E%D7%A9%D7%97%D7%A7%D7%99%D7%9D%2C%2077%20%D7%A9%D7%A2%D7%A8%D7%99%D7%9D%0Ahttps%3A%2F%2Fmaormelikson.vercel.app%2F" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.3);color:#25d366;border-radius:6px;padding:5px 12px;cursor:pointer;font-family:inherit;font-size:12px;text-decoration:none;margin-right:4px">💬 וואטסאפ</a>
 </div>
 </header>
 
@@ -880,7 +881,7 @@ function draw(){
     html+='<div class="mc-top">';
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+sc+'</span>'+rb+(ms?'<span class="mc-ms">🏅</span>':'')+'</div>';
-    html+='<div class="mc-trow">'+tlogo(m.h,15)+'<span class="mc-teams-txt"><span class="mc-tn'+(hBold?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(aBold?' bold':'')+'">'+m.a+'</span></span>'+tlogo(m.a,15)+'</div>';
+    html+='<div class="mc-trow"><div class="mc-team-l">'+tlogo(m.h,15)+'<span class="mc-tn'+(hBold?' bold':'')+'">'+m.h+'</span></div><span class="mc-vs">נגד</span><div class="mc-team-r">'+tlogo(m.a,15)+'<span class="mc-tn'+(aBold?' bold':'')+'">'+m.a+'</span></div></div>';
     var metaParts=[];
     var isCup=m.fw&&m.fw.indexOf('גביע')>=0;
     if(m.st)metaParts.push('📍 '+m.st);
@@ -1057,7 +1058,7 @@ function renderGoals(){
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+m.sc+'</span>'+rb+'</div>';
     if(gbadge)html+='<div class="mc-badge-row">'+gbadge+'</div>';
-    html+='<div class="mc-trow">'+tlogo(m.h,15)+'<span class="mc-teams-txt"><span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span></span>'+tlogo(m.a,15)+'</div>';
+    html+='<div class="mc-trow"><div class="mc-team-l">'+tlogo(m.h,15)+'<span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span></div><span class="mc-vs">נגד</span><div class="mc-team-r">'+tlogo(m.a,15)+'<span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span></div></div>';
     var gmeta=[];
     if(m.st)gmeta.push('📍 '+m.st);
     if(gk)gmeta.push('🧤 '+gk);
@@ -1162,7 +1163,7 @@ function renderAssists(){
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+m.sc+'</span>'+rb+'</div>';
     html+='<div class="mc-badge-row">'+abadge+'</div>';
-    html+='<div class="mc-trow">'+tlogo(m.h,15)+'<span class="mc-teams-txt"><span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span></span>'+tlogo(m.a,15)+'</div>';
+    html+='<div class="mc-trow"><div class="mc-team-l">'+tlogo(m.h,15)+'<span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span></div><span class="mc-vs">נגד</span><div class="mc-team-r">'+tlogo(m.a,15)+'<span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span></div></div>';
     var ameta=[];
     if(m.st)ameta.push('📍 '+m.st);
     if(tgtsStr&&tgtsStr!=='—')ameta.push('🎯 '+tgtsStr);
