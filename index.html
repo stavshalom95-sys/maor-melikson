@@ -194,7 +194,8 @@ tbody tr:last-child td{border-bottom:none}
 .mcD .mc-sc{color:var(--draw)}
 .mcL .mc-sc{color:var(--loss)}
 .mc-ms{font-size:13px;flex-shrink:0}
-.mc-trow{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+.mc-trow{display:flex;align-items:center;gap:4px;margin-bottom:4px}
+.mc-teams-txt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:600}
 .mc-tn.bold{font-weight:800}
 .mc-vs{color:var(--muted2);font-weight:400;margin:0 3px}
 .mc-badge-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:4px}
@@ -879,10 +880,11 @@ function draw(){
     html+='<div class="mc-top">';
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+sc+'</span>'+rb+(ms?'<span class="mc-ms">🏅</span>':'')+'</div>';
-    html+='<div class="mc-trow"><span class="mc-tn'+(hBold?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(aBold?' bold':'')+'">'+m.a+'</span></div>';
+    html+='<div class="mc-trow">'+tlogo(m.h,15)+'<span class="mc-teams-txt"><span class="mc-tn'+(hBold?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(aBold?' bold':'')+'">'+m.a+'</span></span>'+tlogo(m.a,15)+'</div>';
     var metaParts=[];
+    var isCup=m.fw&&m.fw.indexOf('גביע')>=0;
     if(m.st)metaParts.push('📍 '+m.st);
-    if(m.md)metaParts.push('מ\' '+m.md);
+    if(m.md)metaParts.push(isCup?m.md:'מ\' '+m.md);
     if(m.g||m.as){var ach='';if(m.g)ach+='⚽';if(m.as)ach+=' 🎯';metaParts.push(ach.trim());}
     if(metaParts.length)html+='<div class="mc-meta">'+metaParts.map(function(p){return'<span class="mc-mi">'+p+'</span>';}).join('')+'</div>';
     html+='</div>';
@@ -1055,7 +1057,7 @@ function renderGoals(){
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+m.sc+'</span>'+rb+'</div>';
     if(gbadge)html+='<div class="mc-badge-row">'+gbadge+'</div>';
-    html+='<div class="mc-trow"><span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span></div>';
+    html+='<div class="mc-trow">'+tlogo(m.h,15)+'<span class="mc-teams-txt"><span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span></span>'+tlogo(m.a,15)+'</div>';
     var gmeta=[];
     if(m.st)gmeta.push('📍 '+m.st);
     if(gk)gmeta.push('🧤 '+gk);
@@ -1160,7 +1162,7 @@ function renderAssists(){
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+m.sc+'</span>'+rb+'</div>';
     html+='<div class="mc-badge-row">'+abadge+'</div>';
-    html+='<div class="mc-trow"><span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span></div>';
+    html+='<div class="mc-trow">'+tlogo(m.h,15)+'<span class="mc-teams-txt"><span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span></span>'+tlogo(m.a,15)+'</div>';
     var ameta=[];
     if(m.st)ameta.push('📍 '+m.st);
     if(tgtsStr&&tgtsStr!=='—')ameta.push('🎯 '+tgtsStr);
