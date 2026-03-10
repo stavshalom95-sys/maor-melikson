@@ -116,6 +116,34 @@ tbody tr:last-child td{border-bottom:none}
 .cc{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:15px}
 .cc h3{font-size:10px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:13px}
 @media(max-width:720px){.hm{display:none}.tm.home{min-width:70px}.tm.away{min-width:70px}.tname{max-width:70px}}
+/* Expandable rows */
+tbody tr.mrow{cursor:pointer}
+tbody tr.mrow:hover td{background:rgba(31,111,235,.06)!important}
+tr.erow td{padding:0!important;border-bottom:1px solid var(--border)}
+.ep{background:var(--bg3);padding:12px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px 16px;font-size:12px;border-top:2px solid rgba(31,111,235,.3)}
+.ep-i{display:flex;flex-direction:column;gap:2px}
+.ep-l{font-size:9px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.ep-v{color:var(--text);font-weight:500}
+.ep-ac{grid-column:1/-1;padding-top:8px;margin-top:4px;border-top:1px solid var(--border);color:var(--muted2)}
+/* Goals tab */
+.gl-hdr{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.gl-filters{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.goal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+.gc{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .15s}
+.gc:hover{border-color:var(--border2)}
+.gc-top{background:var(--bg3);padding:9px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);gap:8px;flex-wrap:wrap}
+.gc-match{padding:12px 14px;display:flex;align-items:center;gap:8px;justify-content:center}
+.gc-badges{padding:0 14px 10px;display:flex;flex-wrap:wrap;gap:5px}
+.gc-body{padding:10px 14px;display:grid;grid-template-columns:1fr 1fr;gap:6px 12px}
+.gc-i{display:flex;flex-direction:column;gap:1px}
+.gc-l{font-size:9px;color:var(--muted2);text-transform:uppercase;letter-spacing:.5px}
+.gc-v{font-size:12px;font-weight:600}
+.gc-ac{padding:8px 14px;background:rgba(31,111,235,.04);border-top:1px solid var(--border);font-size:11px;color:var(--muted2);line-height:1.5}
+.gbdg{padding:3px 9px;border-radius:8px;font-size:11px;font-weight:700}
+.gbdg-g{background:rgba(227,179,65,.12);color:#e3b341;border:1px solid rgba(227,179,65,.3)}
+.gbdg-p{background:rgba(121,192,255,.1);color:#79c0ff;border:1px solid rgba(121,192,255,.3)}
+.gbdg-h{background:rgba(63,185,80,.1);color:#7ee787;border:1px solid rgba(63,185,80,.3)}
+.gl-empty{text-align:center;padding:40px;color:var(--muted2);font-size:14px}
 </style>
 </head>
 <body>
@@ -124,6 +152,7 @@ tbody tr:last-child td{border-bottom:none}
     <div class="logo"><div class="logo-ico">⚽</div>מאור מליקסון</div>
     <div class="tabs">
       <button class="tab on" id="t-matches" onclick="switchTab('matches')">📋 משחקים</button>
+      <button class="tab" id="t-goals" onclick="switchTab('goals')">⚽ שערים</button>
       <button class="tab" id="t-insights" onclick="switchTab('insights')">📊 תובנות</button>
       <button class="tab" id="t-charts" onclick="switchTab('charts')">📈 גרפים</button>
     </div>
@@ -247,6 +276,28 @@ tbody tr:last-child td{border-bottom:none}
   <div class="ig" style="grid-template-columns:1fr">
     <div class="ic"><h3>📅 עונה אחר עונה</h3><div id="ins-seasons"></div></div>
   </div>
+</div>
+
+<!-- GOALS -->
+<div class="panel" id="p-goals">
+  <div class="gl-hdr">
+    <div class="st" style="margin:0">⚽ כל שערי מאור מליקסון</div>
+    <div class="goals-kpis kpis" id="gl-kpis"></div>
+  </div>
+  <div class="gl-filters frow" style="margin-bottom:12px">
+    <span class="flbl">סנן:</span>
+    <button class="fc on" data-gf="type" data-gv="all" onclick="setGF(this)">הכול</button>
+    <button class="fc" data-gf="type" data-gv="פנדל" onclick="setGF(this)">🎯 פנדל</button>
+    <button class="fc" data-gf="type" data-gv="ראש" onclick="setGF(this)">🦅 ראש</button>
+    <button class="fc" data-gf="type" data-gv="רגיל" onclick="setGF(this)">⚽ רגיל</button>
+    <span class="flbl" style="margin-right:8px">מפעל:</span>
+    <button class="fc on" data-gf="fc" data-gv="all" onclick="setGF(this)">הכול</button>
+    <button class="fc" data-gf="fc" data-gv="ליגה" onclick="setGF(this)">ליגה</button>
+    <button class="fc" data-gf="fc" data-gv="גביע" onclick="setGF(this)">גביע</button>
+    <button class="fc" data-gf="fc" data-gv="אירופה" onclick="setGF(this)">אירופה</button>
+    <button class="fc" data-gf="fc" data-gv="נבחרת" onclick="setGF(this)">נבחרת</button>
+  </div>
+  <div class="goal-grid" id="goal-grid"></div>
 </div>
 
 <!-- CHARTS -->
@@ -494,6 +545,7 @@ function draw(){
   var html='';
   for(var i=0;i<sl.length;i++){
     var m=sl[i];
+    var rid='r'+i;
     var rc=m.r==='W'?'rW':m.r==='L'?'rL':m.r==='D'?'rD':'';
     var rb=m.r==='W'?'<div class="rb rbW">נ</div>':m.r==='L'?'<div class="rb rbL">ה</div>':m.r==='D'?'<div class="rb rbD">ת</div>':'<div class="rb rbQ">?</div>';
     var fpc=FPC[m.fc]||'fpN';
@@ -502,9 +554,7 @@ function draw(){
     var hBold=m.ih, aBold=!m.ih&&m.mc!=='';
     var sc=m.sc||'-';
     var scCls='scbx'+(m.r==='W'?' scW':m.r==='D'?' scD':m.r==='L'?' scL':'');
-    // In RTL: home is on RIGHT, away is on LEFT
-    // sc format is AWAY_GOALS-HOME_GOALS (already correct for RTL display)
-    html+='<tr class="'+rc+'">';
+    html+='<tr class="mrow '+rc+'" id="'+rid+'" onclick="toggleRow(\''+rid+'\')">';
     html+='<td style="color:var(--muted2);font-size:12px">'+m.d+'</td>';
     html+='<td class="hm" style="color:var(--muted2);font-size:11px">'+m.s+'</td>';
     html+='<td class="hm" style="color:var(--muted2);font-size:12px;text-align:center">'+(m.md||'-')+'</td>';
@@ -519,7 +569,23 @@ function draw(){
     html+='<td class="hm sm">'+(m.rf||'-')+'</td>';
     html+='<td class="hm sm">'+(m.co||'-')+'</td>';
     html+='<td class="hm" style="font-size:12px;color:var(--muted2)">'+fans+'</td>';
-    html+='<td class="act">'+ex+(m.ac||'')+'</td>';
+    html+='<td class="act" title="לחץ להרחבה">'+ex+(m.ac||'')+'</td>';
+    html+='</tr>';
+    // Detail row (hidden by default)
+    var epFans=m.fn>0?m.fn.toLocaleString()+' צופים':'—';
+    var epGoal=(m.g?'<span style="color:var(--gc)">⚽ כבש שער</span>':'')+(m.as?'<span style="color:var(--ac)"> 🎯 בישל</span>':'');
+    html+='<tr class="erow" id="exp-'+rid+'" style="display:none">';
+    html+='<td colspan="11"><div class="ep">';
+    html+='<div class="ep-i"><div class="ep-l">מחזור</div><div class="ep-v">'+(m.md||'—')+'</div></div>';
+    html+='<div class="ep-i"><div class="ep-l">עונה</div><div class="ep-v">'+m.s+'</div></div>';
+    html+='<div class="ep-i"><div class="ep-l">תחרות מלאה</div><div class="ep-v">'+m.fw+'</div></div>';
+    html+='<div class="ep-i"><div class="ep-l">אצטדיון</div><div class="ep-v">'+(m.st||'—')+'</div></div>';
+    html+='<div class="ep-i"><div class="ep-l">קהל</div><div class="ep-v">'+epFans+'</div></div>';
+    html+='<div class="ep-i"><div class="ep-l">שופט</div><div class="ep-v">'+(m.rf||'—')+'</div></div>';
+    html+='<div class="ep-i"><div class="ep-l">מאמן</div><div class="ep-v">'+(m.co||'—')+'</div></div>';
+    if(epGoal)html+='<div class="ep-i"><div class="ep-l">הישגים</div><div class="ep-v">'+epGoal+'</div></div>';
+    html+='<div class="ep-i ep-ac"><div class="ep-l">מה עשה</div><div class="ep-v">'+(m.ac||'—')+'</div></div>';
+    html+='</div></td>';
     html+='</tr>';
   }
   document.getElementById('tb').innerHTML=html;
@@ -548,7 +614,7 @@ function kpis(d){
 }
 
 function switchTab(name){
-  ['matches','insights','charts'].forEach(function(n){
+  ['matches','goals','insights','charts'].forEach(function(n){
     document.getElementById('p-'+n).classList.remove('on');
     document.getElementById('t-'+n).classList.remove('on');
   });
@@ -556,6 +622,115 @@ function switchTab(name){
   document.getElementById('t-'+name).classList.add('on');
   if(name==='insights'&&!window._ins){buildIns();window._ins=1;}
   if(name==='charts'&&!window._ch){buildCh();window._ch=1;}
+  if(name==='goals'&&!window._gl){buildGoals();window._gl=1;}
+}
+
+/* ── Goals tab ─────────────────────────────────────────── */
+var gfType='all', gfFc='all';
+function setGF(el){
+  var ft=el.getAttribute('data-gf'), fv=el.getAttribute('data-gv');
+  document.querySelectorAll('[data-gf="'+ft+'"]').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+  if(ft==='type')gfType=fv; else gfFc=fv;
+  renderGoals();
+}
+
+function parseGoalInfo(ac){
+  if(!ac)return[];
+  var res=[];
+  var multi=ac.match(/(\d+) שערים?\(([^)]+)\)/);
+  if(multi){
+    var mins=multi[2].split(',');
+    for(var i=0;i<mins.length;i++){
+      var info=mins[i].trim();
+      var m2=info.match(/(\d+)/);
+      res.push({min:m2?m2[1]:'?',type:info.includes('פנדל')||ac.includes('פנדל')?'פנדל':'רגיל'});
+    }
+    return res;
+  }
+  var m=ac.match(/שער\(([^)]*)\)/);
+  if(!m)m=ac.match(/שער\(דקה (\d+)\)/);
+  if(m){
+    var info=m[1];
+    var mn=info.match(/(\d+)/);
+    var isPen=(info+' '+ac).includes('פנדל');
+    var isHead=(info+' '+ac).includes('ראש');
+    res.push({min:mn?mn[1]:'?',type:isPen?'פנדל':isHead?'ראש':'רגיל'});
+    return res;
+  }
+  if(ac.includes('שער')||ac.includes('שערים')){
+    res.push({min:'?',type:ac.includes('פנדל')?'פנדל':ac.includes('ראש')?'ראש':'רגיל'});
+  }
+  return res;
+}
+
+var _allGoals=null;
+function buildGoals(){
+  _allGoals=ALL.filter(function(m){return m.g;}).sort(function(a,b){return b.ts-a.ts;});
+  var pens=_allGoals.filter(function(m){return (m.ac||'').includes('פנדל');}).length;
+  var heads=_allGoals.filter(function(m){return (m.ac||'').includes('ראש');}).length;
+  var multi=_allGoals.filter(function(m){return /[2-9] שערים/.test(m.ac||'');}).length;
+  var kh='<div class="kpi"><div class="v" style="color:var(--gc)">'+_allGoals.length+'</div><div class="l">שערים</div></div>';
+  kh+='<div class="kpi"><div class="v" style="color:var(--ac)">'+pens+'</div><div class="l">פנדלים</div></div>';
+  kh+='<div class="kpi"><div class="v" style="color:var(--win)">'+heads+'</div><div class="l">ראש</div></div>';
+  kh+='<div class="kpi"><div class="v" style="color:var(--draw)">'+multi+'</div><div class="l">דאבל+</div></div>';
+  document.getElementById('gl-kpis').innerHTML=kh;
+  renderGoals();
+}
+
+function renderGoals(){
+  if(!_allGoals)return;
+  var goals=_allGoals.filter(function(m){
+    var gi=parseGoalInfo(m.ac||'');
+    var tp=gi.length>0?gi[0].type:'רגיל';
+    if(gfType!=='all'&&tp!==gfType)return false;
+    if(gfFc!=='all'&&m.fc!==gfFc)return false;
+    return true;
+  });
+  if(!goals.length){
+    document.getElementById('goal-grid').innerHTML='<div class="gl-empty">אין שערים בסינון זה</div>';
+    return;
+  }
+  var html='';
+  for(var i=0;i<goals.length;i++){
+    var m=goals[i];
+    var gi=parseGoalInfo(m.ac||'');
+    var fpc=FPC[m.fc]||'fpN';
+    var rb=m.r==='W'?'<span class="fp fpE">ניצחון</span>':m.r==='D'?'<span class="fp fpGL">תיקו</span>':'<span class="fp" style="background:rgba(248,81,73,.1);color:#f85149">הפסד</span>';
+    var fans=m.fn>0?m.fn.toLocaleString():'—';
+    var scCls='scbx'+(m.r==='W'?' scW':m.r==='D'?' scD':m.r==='L'?' scL':'');
+    var gbadge='';
+    if(!gi.length){gbadge='<span class="gbdg gbdg-g">⚽ שער</span>';}
+    else{for(var j=0;j<gi.length;j++){var ginfo=gi[j];var bc=ginfo.type==='פנדל'?'gbdg-p':ginfo.type==='ראש'?'gbdg-h':'gbdg-g';var ico=ginfo.type==='פנדל'?'🎯':ginfo.type==='ראש'?'🦅':'⚽';gbadge+='<span class="gbdg '+bc+'">'+ico+(ginfo.min!=='?'?' דקה '+ginfo.min:'')+(ginfo.type!=='רגיל'?' ('+ginfo.type+')':'')+'</span> ';}}
+    html+='<div class="gc">';
+    html+='<div class="gc-top">';
+    html+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><span style="font-size:11px;color:var(--muted2)">'+m.d+'</span><span class="fp '+fpc+'">'+m.fc+'</span>'+(m.md?'<span style="font-size:10px;color:var(--muted2)">מחזור '+m.md+'</span>':'')+'</div>';
+    html+=rb;
+    html+='</div>';
+    html+='<div class="gc-match">';
+    html+='<div class="tm home" style="min-width:90px">'+tlogo(m.h,18)+'<span class="tname'+(m.ih?' bold':'')+'">'+m.h+'</span></div>';
+    html+='<div class="'+scCls+'" style="font-size:13px;padding:2px 8px">'+m.sc+'</div>';
+    html+='<div class="tm away" style="min-width:90px"><span class="tname'+(!m.ih?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,18)+'</div>';
+    html+='</div>';
+    html+='<div class="gc-badges">'+gbadge+'</div>';
+    html+='<div class="gc-body">';
+    html+='<div class="gc-i"><div class="gc-l">🏟️ אצטדיון</div><div class="gc-v">'+(m.st||'—')+'</div></div>';
+    html+='<div class="gc-i"><div class="gc-l">👥 קהל</div><div class="gc-v">'+fans+'</div></div>';
+    html+='<div class="gc-i"><div class="gc-l">🧑‍⚖️ שופט</div><div class="gc-v">'+(m.rf||'—')+'</div></div>';
+    html+='<div class="gc-i"><div class="gc-l">🧑‍💼 מאמן</div><div class="gc-v">'+(m.co||'—')+'</div></div>';
+    html+='<div class="gc-i"><div class="gc-l">🏆 תחרות</div><div class="gc-v">'+m.fw+'</div></div>';
+    html+='<div class="gc-i"><div class="gc-l">📅 עונה</div><div class="gc-v">'+m.s+'</div></div>';
+    html+='</div>';
+    html+='<div class="gc-ac">📝 '+m.ac+'</div>';
+    html+='</div>';
+  }
+  document.getElementById('goal-grid').innerHTML=html;
+}
+
+/* ── Row expand ─────────────────────────────────────────── */
+function toggleRow(rid){
+  var el=document.getElementById('exp-'+rid);
+  if(el)el.style.display=el.style.display==='none'?'table-row':'none';
 }
 
 var MED=['p1','p2','p3','','','','','','',''];
