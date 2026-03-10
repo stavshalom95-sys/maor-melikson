@@ -153,6 +153,7 @@ tr.erow td{padding:0!important;border-bottom:1px solid var(--border)}
     <div class="tabs">
       <button class="tab on" id="t-matches" onclick="switchTab('matches')">📋 משחקים</button>
       <button class="tab" id="t-goals" onclick="switchTab('goals')">⚽ שערים</button>
+      <button class="tab" id="t-assists" onclick="switchTab('assists')">🎯 בישולים</button>
       <button class="tab" id="t-insights" onclick="switchTab('insights')">📊 תובנות</button>
       <button class="tab" id="t-charts" onclick="switchTab('charts')">📈 גרפים</button>
     </div>
@@ -258,6 +259,12 @@ tr.erow td{padding:0!important;border-bottom:1px solid var(--border)}
     <div class="ic"><h3>🆚 יריבים קבועים</h3><div id="ins-opps"></div></div>
   </div>
 
+  <div class="st">🔄 החלפות</div>
+  <div class="ig">
+    <div class="ic"><h3>🔴 מי החליף את מאור (יצא)</h3><div id="ins-subout"></div></div>
+    <div class="ic"><h3>🟢 את מי מאור החליף (נכנס)</h3><div id="ins-subin"></div></div>
+  </div>
+
   <div class="st">⚽ שערים ובישולים</div>
   <div class="ig">
     <div class="ic"><h3>⚽ שערים — נגד מי הכי הרבה</h3><div id="ins-goalsvs"></div></div>
@@ -276,6 +283,23 @@ tr.erow td{padding:0!important;border-bottom:1px solid var(--border)}
   <div class="ig" style="grid-template-columns:1fr">
     <div class="ic"><h3>📅 עונה אחר עונה</h3><div id="ins-seasons"></div></div>
   </div>
+</div>
+
+<!-- ASSISTS -->
+<div class="panel" id="p-assists">
+  <div class="gl-hdr">
+    <div class="st" style="margin:0">🎯 כל בישולי מאור מליקסון</div>
+    <div class="goals-kpis kpis" id="as-kpis"></div>
+  </div>
+  <div class="gl-filters frow" style="margin-bottom:12px">
+    <span class="flbl">מפעל:</span>
+    <button class="fc on" data-af="fc" data-av="all" onclick="setAF(this)">הכול</button>
+    <button class="fc" data-af="fc" data-av="ליגה" onclick="setAF(this)">ליגה</button>
+    <button class="fc" data-af="fc" data-av="גביע" onclick="setAF(this)">גביע</button>
+    <button class="fc" data-af="fc" data-av="אירופה" onclick="setAF(this)">אירופה</button>
+    <button class="fc" data-af="fc" data-av="נבחרת" onclick="setAF(this)">נבחרת</button>
+  </div>
+  <div class="goal-grid" id="assist-grid"></div>
 </div>
 
 <!-- GOALS -->
@@ -330,8 +354,8 @@ var LOGOS = {
   'מכבי פתח תקווה':{c:'#FFD700'},
   'בני סכנין':{l:'https://upload.wikimedia.org/wikipedia/en/6/63/Bnei_Sakhnin_FC.svg',c:'#22c55e'},
   'הפועל פתח תקווה':{l:'https://upload.wikimedia.org/wikipedia/en/1/1f/Hapoelpt.svg',c:'#ef4444'},
-  'מ.ס.אשדוד':{l:'https://upload.wikimedia.org/wikipedia/en/4/49/Maccabi_Ironi_Ashdod_F.C.png',c:'#3b82f6'},
-  'מ.ס. אשדוד':{l:'https://upload.wikimedia.org/wikipedia/en/4/49/Maccabi_Ironi_Ashdod_F.C.png',c:'#3b82f6'},
+  'מ.ס.אשדוד':{l:'https://upload.wikimedia.org/wikipedia/en/7/72/FC_Ashdod.svg',c:'#3b82f6'},
+  'מ.ס. אשדוד':{l:'https://upload.wikimedia.org/wikipedia/en/7/72/FC_Ashdod.svg',c:'#3b82f6'},
   'קרית שמונה':{l:'https://upload.wikimedia.org/wikipedia/en/d/d1/Hapoel_Ironi_Kiryat_Shmona_badge.png',c:'#22c55e'},
   'הפועל רמת גן':{l:'https://upload.wikimedia.org/wikipedia/en/9/91/Hapoel_ramat-gan.svg',c:'#ef4444'},
   'מכבי הרצליה':{c:'#3b82f6'},
@@ -614,7 +638,7 @@ function kpis(d){
 }
 
 function switchTab(name){
-  ['matches','goals','insights','charts'].forEach(function(n){
+  ['matches','goals','assists','insights','charts'].forEach(function(n){
     document.getElementById('p-'+n).classList.remove('on');
     document.getElementById('t-'+n).classList.remove('on');
   });
@@ -623,6 +647,7 @@ function switchTab(name){
   if(name==='insights'&&!window._ins){buildIns();window._ins=1;}
   if(name==='charts'&&!window._ch){buildCh();window._ch=1;}
   if(name==='goals'&&!window._gl){buildGoals();window._gl=1;}
+  if(name==='assists'&&!window._as){buildAssists();window._as=1;}
 }
 
 /* ── Goals tab ─────────────────────────────────────────── */
@@ -733,6 +758,88 @@ function toggleRow(rid){
   if(el)el.style.display=el.style.display==='none'?'table-row':'none';
 }
 
+/* ── Assists tab ─────────────────────────────────────────── */
+var afFc='all';
+function setAF(el){
+  document.querySelectorAll('[data-af="fc"]').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+  afFc=el.getAttribute('data-av');
+  renderAssists();
+}
+
+function parseAssistTargets(ac){
+  if(!ac)return[];
+  var res=[];
+  var matches=ac.match(/בישול[ים]*\(([^)]+)\)/g);
+  if(matches){
+    for(var i=0;i<matches.length;i++){
+      var inner=matches[i].replace(/בישול[ים]*\(/,'').replace(')','');
+      var parts=inner.split(/[+,]/);
+      for(var j=0;j<parts.length;j++){
+        var nm=parts[j].replace(/^\d+\s*/,'').trim();
+        if(nm&&nm.length>1&&nm!=='שער עצמי')res.push(nm);
+      }
+    }
+  }
+  return res;
+}
+
+var _allAssists=null;
+function buildAssists(){
+  _allAssists=ALL.filter(function(m){return m.as;}).sort(function(a,b){return b.ts-a.ts;});
+  var targets={};
+  for(var i=0;i<_allAssists.length;i++){
+    var tgts=parseAssistTargets(_allAssists[i].ac||'');
+    for(var j=0;j<tgts.length;j++){if(tgts[j])targets[tgts[j]]=(targets[tgts[j]]||0)+1;}
+  }
+  var tk=Object.keys(targets).sort(function(a,b){return targets[b]-targets[a];});
+  var topT=tk[0]||'';
+  var kh='<div class="kpi"><div class="v" style="color:var(--ac)">'+_allAssists.length+'</div><div class="l">בישולים</div></div>';
+  kh+='<div class="kpi"><div class="v" style="color:var(--gc)">'+tk.length+'</div><div class="l">שחקנים שונים</div></div>';
+  if(topT)kh+='<div class="kpi" style="min-width:110px"><div class="v" style="font-size:12px;color:var(--win)">'+topT+'</div><div class="l">הכי הרבה ('+targets[topT]+')</div></div>';
+  document.getElementById('as-kpis').innerHTML=kh;
+  renderAssists();
+}
+
+function renderAssists(){
+  if(!_allAssists)return;
+  var assists=_allAssists.filter(function(m){
+    if(afFc!=='all'&&m.fc!==afFc)return false;
+    return true;
+  });
+  if(!assists.length){document.getElementById('assist-grid').innerHTML='<div class="gl-empty">אין בישולים בסינון זה</div>';return;}
+  var html='';
+  for(var i=0;i<assists.length;i++){
+    var m=assists[i];
+    var tgts=parseAssistTargets(m.ac||'');
+    var fpc=FPC[m.fc]||'fpN';
+    var rb=m.r==='W'?'<span class="fp fpE">ניצחון</span>':m.r==='D'?'<span class="fp fpGL">תיקו</span>':'<span class="fp" style="background:rgba(248,81,73,.1);color:#f85149">הפסד</span>';
+    var fans=m.fn>0?m.fn.toLocaleString():'—';
+    var scCls='scbx'+(m.r==='W'?' scW':m.r==='D'?' scD':m.r==='L'?' scL':'');
+    var asN=tgts.length>1?' ('+tgts.length+')':'';
+    var gbadge='<span class="gbdg" style="background:rgba(121,192,255,.1);color:#79c0ff;border:1px solid rgba(121,192,255,.3)">🎯 בישול'+asN+'</span>';
+    if(m.g)gbadge+=' <span class="gbdg gbdg-g">⚽ שער</span>';
+    html+='<div class="gc">';
+    html+='<div class="gc-top"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><span style="font-size:11px;color:var(--muted2)">'+m.d+'</span><span class="fp '+fpc+'">'+m.fc+'</span>'+(m.md?'<span style="font-size:10px;color:var(--muted2)">מחזור '+m.md+'</span>':'')+'</div>'+rb+'</div>';
+    html+='<div class="gc-match"><div class="tm home" style="min-width:90px">'+tlogo(m.h,18)+'<span class="tname'+(m.ih?' bold':'')+'">'+m.h+'</span></div><div class="'+scCls+'" style="font-size:13px;padding:2px 8px">'+m.sc+'</div><div class="tm away" style="min-width:90px"><span class="tname'+(!m.ih?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,18)+'</div></div>';
+    html+='<div class="gc-badges">'+gbadge;
+    for(var j=0;j<tgts.length;j++)html+=' <span style="font-size:11px;color:var(--muted2)">→</span> <span style="font-size:12px;font-weight:600;color:var(--text)">'+tgts[j]+'</span>';
+    html+='</div>';
+    html+='<div class="gc-body">';
+    html+='<div class="gc-i"><div class="gc-l">🏟️ אצטדיון</div><div class="gc-v">'+(m.st||'—')+'</div></div>';
+    html+='<div class="gc-i"><div class="gc-l">👥 קהל</div><div class="gc-v">'+fans+'</div></div>';
+    html+='<div class="gc-i"><div class="gc-l">🧑‍⚖️ שופט</div><div class="gc-v">'+(m.rf||'—')+'</div></div>';
+    html+='<div class="gc-i"><div class="gc-l">🧑‍💼 מאמן</div><div class="gc-v">'+(m.co||'—')+'</div></div>';
+    html+='<div class="gc-i"><div class="gc-l">🏆 תחרות</div><div class="gc-v">'+m.fw+'</div></div>';
+    html+='<div class="gc-i"><div class="gc-l">📅 עונה</div><div class="gc-v">'+m.s+'</div></div>';
+    html+='</div>';
+    html+='<div class="gc-ac">📝 '+m.ac+'</div>';
+    html+='</div>';
+  }
+  document.getElementById('assist-grid').innerHTML=html;
+}
+
+
 var MED=['p1','p2','p3','','','','','','',''];
 
 function mkClubCard(club,s){
@@ -773,32 +880,32 @@ function buildIns(){
   var sts={};
   for(var i=0;i<ALL.length;i++){var m=ALL[i];if(!m.st||m.st==='None'||m.st.length<2)continue;if(!sts[m.st])sts[m.st]={n:0,w:0,d:0,l:0,fn:[]};sts[m.st].n++;if(m.r==='W')sts[m.st].w++;else if(m.r==='D')sts[m.st].d++;else if(m.r==='L')sts[m.st].l++;if(m.fn>0)sts[m.st].fn.push(m.fn);}
   var sk=Object.keys(sts).sort(function(a,b){return sts[b].n-sts[a].n;});
-  var sh='';for(var i=0;i<Math.min(sk.length,12);i++){var s=sts[sk[i]],pp=((s.w/s.n)*100).toFixed(0);sh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+sk[i]+'</div><div class="tis">'+s.w+'נ '+s.d+'ת '+s.l+'ה</div></div><div class="bdg">'+s.n+'</div></div>';}
+  var sh='';for(var i=0;i<sk.length;i++){var s=sts[sk[i]],pp=((s.w/s.n)*100).toFixed(0);sh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+sk[i]+'</div><div class="tis">'+s.w+'נ '+s.d+'ת '+s.l+'ה</div></div><div class="bdg">'+s.n+'</div></div>';}
   document.getElementById('ins-stads').innerHTML=sh;
   var sp=sk.filter(function(s){return sts[s].n>=5;}).sort(function(a,b){return(sts[b].w/sts[b].n)-(sts[a].w/sts[a].n);});
-  var sph='';for(var i=0;i<Math.min(sp.length,10);i++){var s=sts[sp[i]],pp=((s.w/s.n)*100).toFixed(0);sph+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+sp[i]+'</div><div class="tis">'+s.n+' משחקים</div></div><div class="bdg" style="color:var(--win)">'+pp+'%</div></div>';}
+  var sph='';for(var i=0;i<sp.length;i++){var s=sts[sp[i]],pp=((s.w/s.n)*100).toFixed(0);sph+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+sp[i]+'</div><div class="tis">'+s.n+' משחקים</div></div><div class="bdg" style="color:var(--win)">'+pp+'%</div></div>';}
   document.getElementById('ins-stadp').innerHTML=sph;
   var sfArr=sk.filter(function(s){return sts[s].fn.length>=3;}).map(function(s){return{k:s,avg:sts[s].fn.reduce(function(t,v){return t+v;},0)/sts[s].fn.length};}).sort(function(a,b){return b.avg-a.avg;});
-  var sfh='';for(var i=0;i<Math.min(sfArr.length,8);i++){var sf=sfArr[i],s=sts[sf.k];sfh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+sf.k+'</div><div class="tis">'+s.fn.length+' משחקים</div></div><div class="bdg">'+Math.round(sf.avg).toLocaleString()+'</div></div>';}
+  var sfh='';for(var i=0;i<sfArr.length;i++){var sf=sfArr[i],s=sts[sf.k];sfh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+sf.k+'</div><div class="tis">'+s.fn.length+' משחקים</div></div><div class="bdg">'+Math.round(sf.avg).toLocaleString()+'</div></div>';}
   document.getElementById('ins-stadf').innerHTML=sfh;
 
   // REFS
   var refs={};
   for(var i=0;i<ALL.length;i++){var r=ALL[i].rf;if(r&&r.length>2&&r!=='None'){if(!refs[r])refs[r]={n:0,w:0,d:0,l:0};refs[r].n++;if(ALL[i].r==='W')refs[r].w++;else if(ALL[i].r==='D')refs[r].d++;else if(ALL[i].r==='L')refs[r].l++;}}
   var rk=Object.keys(refs).sort(function(a,b){return refs[b].n-refs[a].n;});
-  var rh='';for(var i=0;i<Math.min(rk.length,10);i++){var s=refs[rk[i]],pp=((s.w/s.n)*100).toFixed(0);rh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+rk[i]+'</div><div class="tis">'+s.w+'נ '+s.d+'ת '+s.l+'ה</div></div><div style="display:flex;gap:6px;align-items:center"><div class="bdg">'+s.n+'</div><div class="bdg" style="color:var(--win);font-size:11px">'+pp+'%</div></div></div>';}
+  var rh='';for(var i=0;i<rk.length;i++){var s=refs[rk[i]],pp=((s.w/s.n)*100).toFixed(0);rh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+rk[i]+'</div><div class="tis">'+s.w+'נ '+s.d+'ת '+s.l+'ה</div></div><div style="display:flex;gap:6px;align-items:center"><div class="bdg">'+s.n+'</div><div class="bdg" style="color:var(--win);font-size:11px">'+pp+'%</div></div></div>';}
   document.getElementById('ins-refs').innerHTML=rh;
 
   // COACHES by win% (min 5)
   var cos={};
   for(var i=0;i<ALL.length;i++){var m=ALL[i];if(!m.co||m.co.length<2||m.co==='None')continue;if(!cos[m.co])cos[m.co]={n:0,w:0,d:0,l:0,g:0,a:0,club:m.mc};cos[m.co].n++;if(m.r==='W')cos[m.co].w++;else if(m.r==='D')cos[m.co].d++;else if(m.r==='L')cos[m.co].l++;if(m.g)cos[m.co].g++;if(m.as)cos[m.co].a++;}
   var cok=Object.keys(cos).filter(function(c){return cos[c].n>=5;}).sort(function(a,b){return(cos[b].w/cos[b].n)-(cos[a].w/cos[a].n);});
-  var coh='';for(var i=0;i<Math.min(cok.length,12);i++){var c=cok[i],s=cos[c],pp=((s.w/s.n)*100).toFixed(0);coh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+c+'</div><div class="tis">'+s.n+' משחקים · '+s.w+'נ '+s.d+'ת '+s.l+'ה · '+s.g+'שע</div></div><div class="bdg" style="color:var(--win)">'+pp+'%</div></div>';}
+  var coh='';for(var i=0;i<cok.length;i++){var c=cok[i],s=cos[c],pp=((s.w/s.n)*100).toFixed(0);coh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+c+'</div><div class="tis">'+s.n+' משחקים · '+s.w+'נ '+s.d+'ת '+s.l+'ה · '+s.g+'שע</div></div><div class="bdg" style="color:var(--win)">'+pp+'%</div></div>';}
   document.getElementById('ins-coaches').innerHTML=coh;
 
   // COACHES by most matches
   var cok2=Object.keys(cos).sort(function(a,b){return cos[b].n-cos[a].n;});
-  var coh2='';for(var i=0;i<Math.min(cok2.length,10);i++){var c=cok2[i],s=cos[c],pp=((s.w/s.n)*100).toFixed(0);var lh2=(LOGOS[s.club]&&LOGOS[s.club].l)?'<img src="'+LOGOS[s.club].l+'" width="13" height="13" style="border-radius:2px;vertical-align:middle;margin-left:3px" onerror="this.style.display=\'none\'">':'';coh2+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+lh2+c+'</div><div class="tis">'+s.w+'נ '+s.d+'ת '+s.l+'ה · '+s.g+'⚽ '+s.a+'🎯</div></div><div class="bdg">'+s.n+'</div></div>';}
+  var coh2='';for(var i=0;i<cok2.length;i++){var c=cok2[i],s=cos[c],pp=((s.w/s.n)*100).toFixed(0);var lh2=(LOGOS[s.club]&&LOGOS[s.club].l)?'<img src="'+LOGOS[s.club].l+'" width="13" height="13" style="border-radius:2px;vertical-align:middle;margin-left:3px" onerror="this.style.display=\'none\'">':'';coh2+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+lh2+c+'</div><div class="tis">'+s.w+'נ '+s.d+'ת '+s.l+'ה · '+s.g+'⚽ '+s.a+'🎯</div></div><div class="bdg">'+s.n+'</div></div>';}
   document.getElementById('ins-coaches2').innerHTML=coh2;
 
   // GOALS AGAINST WHOM
@@ -810,7 +917,7 @@ function buildIns(){
     goalsVs[op]=(goalsVs[op]||0)+1;
   }
   var gvk=Object.keys(goalsVs).sort(function(a,b){return goalsVs[b]-goalsVs[a];});
-  var gvh='';for(var i=0;i<Math.min(gvk.length,10);i++){var op=gvk[i];var lh=(LOGOS[op]&&LOGOS[op].l)?'<img src="'+LOGOS[op].l+'" width="14" height="14" style="border-radius:2px;vertical-align:middle;margin-left:3px" onerror="this.style.display=\'none\'">':'';gvh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+lh+op+'</div></div><div class="bdg" style="color:var(--gc)">'+goalsVs[op]+'⚽</div></div>';}
+  var gvh='';for(var i=0;i<gvk.length;i++){var op=gvk[i];var lh=(LOGOS[op]&&LOGOS[op].l)?'<img src="'+LOGOS[op].l+'" width="14" height="14" style="border-radius:2px;vertical-align:middle;margin-left:3px" onerror="this.style.display=\'none\'">':'';gvh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+lh+op+'</div></div><div class="bdg" style="color:var(--gc)">'+goalsVs[op]+'⚽</div></div>';}
   document.getElementById('ins-goalsvs').innerHTML=gvh;
 
   // ASSISTS TO WHOM (parse from action text)
@@ -832,8 +939,24 @@ function buildIns(){
     }
   }
   var atk=Object.keys(assistsTo).sort(function(a,b){return assistsTo[b]-assistsTo[a];});
-  var ath='';for(var i=0;i<Math.min(atk.length,10);i++){ath+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+atk[i]+'</div></div><div class="bdg" style="color:var(--ac)">'+assistsTo[atk[i]]+'🎯</div></div>';}
+  var ath='';for(var i=0;i<atk.length;i++){ath+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+atk[i]+'</div></div><div class="bdg" style="color:var(--ac)">'+assistsTo[atk[i]]+'🎯</div></div>';}
   document.getElementById('ins-assiststo').innerHTML=ath;
+
+  // SUBSTITUTIONS
+  var subOut={}, subIn={};
+  for(var i=0;i<ALL.length;i++){
+    var acS=ALL[i].ac||'';
+    var outM=acS.match(/יצא \d+\(([^)]+)\)/g);
+    if(outM){for(var j=0;j<outM.length;j++){var nm=outM[j].replace(/יצא \d+\(/,'').replace(')','').trim();if(nm)subOut[nm]=(subOut[nm]||0)+1;}}
+    var inM=acS.match(/נכנס \d+\(([^)]+)\)/g);
+    if(inM){for(var j=0;j<inM.length;j++){var nm2=inM[j].replace(/נכנס \d+\(/,'').replace(')','').trim();if(nm2)subIn[nm2]=(subIn[nm2]||0)+1;}}
+  }
+  var sok=Object.keys(subOut).sort(function(a,b){return subOut[b]-subOut[a];});
+  var soh='';for(var i=0;i<sok.length;i++){soh+='<div class="tr2"><div class="pos '+MED[Math.min(i,9)]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+sok[i]+'</div></div><div class="bdg">'+subOut[sok[i]]+'x</div></div>';}
+  document.getElementById('ins-subout').innerHTML=soh;
+  var sik=Object.keys(subIn).sort(function(a,b){return subIn[b]-subIn[a];});
+  var sih='';for(var i=0;i<sik.length;i++){sih+='<div class="tr2"><div class="pos '+MED[Math.min(i,9)]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+sik[i]+'</div></div><div class="bdg">'+subIn[sik[i]]+'x</div></div>';}
+  document.getElementById('ins-subin').innerHTML=sih;
 
   // OPPONENTS
   var opps={};
@@ -845,7 +968,7 @@ function buildIns(){
     opps[op].n++;if(m.r==='W')opps[op].w++;else if(m.r==='D')opps[op].d++;else if(m.r==='L')opps[op].l++;
   }
   var ok=Object.keys(opps).sort(function(a,b){return opps[b].n-opps[a].n;});
-  var oh='';for(var i=0;i<Math.min(ok.length,12);i++){var op=ok[i],s=opps[op],pp=((s.w/s.n)*100).toFixed(0);var lh=(LOGOS[op]&&LOGOS[op].l)?'<img src="'+LOGOS[op].l+'" width="14" height="14" style="border-radius:2px;vertical-align:middle;margin-left:3px" onerror="this.style.display=\'none\'">':'';oh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+lh+op+'</div><div class="tis">'+s.w+'נ '+s.d+'ת '+s.l+'ה</div></div><div style="display:flex;gap:5px;align-items:center"><div class="bdg">'+s.n+'</div><div class="bdg" style="color:var(--win);font-size:11px">'+pp+'%</div></div></div>';}
+  var oh='';for(var i=0;i<ok.length;i++){var op=ok[i],s=opps[op],pp=((s.w/s.n)*100).toFixed(0);var lh=(LOGOS[op]&&LOGOS[op].l)?'<img src="'+LOGOS[op].l+'" width="14" height="14" style="border-radius:2px;vertical-align:middle;margin-left:3px" onerror="this.style.display=\'none\'">':'';oh+='<div class="tr2"><div class="pos '+MED[i]+'">'+(i+1)+'</div><div class="tii"><div class="tit">'+lh+op+'</div><div class="tis">'+s.w+'נ '+s.d+'ת '+s.l+'ה</div></div><div style="display:flex;gap:5px;align-items:center"><div class="bdg">'+s.n+'</div><div class="bdg" style="color:var(--win);font-size:11px">'+pp+'%</div></div></div>';}
   document.getElementById('ins-opps').innerHTML=oh;
 
   // BY FRAMEWORK
