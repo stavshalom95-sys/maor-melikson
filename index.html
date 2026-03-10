@@ -136,24 +136,69 @@ tbody tr:last-child td{border-bottom:none}
 @media(max-width:720px){.hm{display:none}.sm{display:none}.tm.home{min-width:60px}.tm.away{min-width:60px}.tname{max-width:60px}.tabs{display:none}.kpi{padding:6px 8px;min-width:48px}.kpi .v{font-size:18px}.hinfo h1{font-size:15px}.hero-in{gap:8px}.frow{flex-wrap:wrap;gap:4px}.fc{font-size:11px;padding:3px 7px}.tw{overflow-x:auto}.tl-lbl{width:90px;min-width:90px}.ep{grid-template-columns:1fr 1fr;gap:6px 10px;padding:10px 12px}body{padding-bottom:68px}}.mob-nav{display:none}@media(max-width:720px){.mob-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);z-index:200;padding-bottom:env(safe-area-inset-bottom,0px)}.mob-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 2px 4px;border:none;background:transparent;color:var(--muted2);font-family:'Heebo',sans-serif;font-size:9px;cursor:pointer;gap:1px;transition:color .15s}.mob-nav-btn .mn-ico{font-size:18px;line-height:1}.mob-nav-btn.on{color:var(--acc)}}
 
 /* Trophies */
-.trophies-section{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 20px}
-.tr-title{font-size:13px;font-weight:700;color:var(--muted2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
-.tr-grid{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.trophies-section{background:var(--bg2);border-bottom:1px solid var(--border)}
+.tr-toggle{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;cursor:pointer;user-select:none}
+.tr-toggle:hover{background:var(--bg3)}
+.tr-toggle span:first-child{font-size:13px;font-weight:700;color:var(--text)}
+.tr-grid{display:flex;gap:8px;overflow-x:auto;padding:8px 16px 12px;scrollbar-width:none}
 .tr-grid::-webkit-scrollbar{display:none}
-.tr-card{min-width:110px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;
-  padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;
+.tr-grid.hidden{display:none}
+.tr-card{min-width:100px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;
+  padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;
   transition:.2s;flex-shrink:0}
 .tr-card:hover{border-color:var(--gc);background:rgba(227,179,65,.06)}
-.tr-ind{border-color:rgba(88,166,255,.3)}
-.tr-ico{font-size:26px}
+.tr-ico{font-size:22px}
 .tr-yr{font-size:10px;color:var(--muted2);font-weight:600}
-.tr-name{font-size:12px;font-weight:700;color:var(--text)}
+.tr-name{font-size:11px;font-weight:700;color:var(--text)}
 .tr-club{font-size:10px;color:var(--muted2)}
 @media(max-width:720px){
-  .trophies-section{padding:10px 12px}
-  .tr-card{min-width:95px;padding:8px 6px}
-  .tr-ico{font-size:22px}
-  .tr-name{font-size:11px}
+  .tr-toggle{padding:7px 12px}
+  .tr-grid{padding:6px 12px 10px;gap:6px}
+  .tr-card{min-width:88px}
+}
+
+/* ── Match Cards ─────────────────────────────────────── */
+.match-list{display:flex;flex-direction:column;gap:8px;padding:12px 16px}
+.match-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;
+  padding:12px 14px;cursor:pointer;transition:border-color .15s,background .15s;
+  animation:fadeUp .18s ease both}
+.match-card:hover{background:var(--bg3)}
+.match-card.expanded{border-color:var(--acc2);background:var(--bg3)}
+.match-card.mcW{border-right:3px solid var(--win)}
+.match-card.mcD{border-right:3px solid var(--draw)}
+.match-card.mcL{border-right:3px solid var(--loss)}
+.mc-top{display:flex;align-items:center;gap:10px}
+.mc-left{min-width:74px;text-align:right;flex-shrink:0}
+.mc-date{font-size:11px;color:var(--muted2);font-weight:600;line-height:1.4}
+.mc-szn{font-size:10px;color:var(--muted);margin:2px 0}
+.mc-body{flex:1;overflow:hidden;min-width:0}
+.mc-teams{display:flex;align-items:center;gap:6px}
+.mc-team{display:flex;align-items:center;gap:4px;flex:1;min-width:0}
+.mc-team.home{justify-content:flex-end}
+.mc-team.away{flex-direction:row-reverse;justify-content:flex-end}
+.mc-tn{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px}
+.mc-tn.bold{font-weight:800}
+.mc-sc{font-size:19px;font-weight:900;min-width:52px;text-align:center;flex-shrink:0}
+.mcW .mc-sc{color:var(--win)}
+.mcD .mc-sc{color:var(--draw)}
+.mcL .mc-sc{color:var(--loss)}
+.mc-sub{font-size:10px;color:var(--muted2);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mc-right{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:4px}
+.mc-detail{display:none}
+.match-card.expanded .mc-detail{display:block;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.mc-dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px 12px}
+.mc-di{display:flex;flex-direction:column;gap:2px}
+.mc-dl{font-size:9px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.mc-dv{font-size:12px;font-weight:600;color:var(--text)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:720px){
+  .match-list{padding:8px 10px;gap:6px}
+  .match-card{padding:10px 12px;border-radius:10px}
+  .mc-tn{max-width:78px;font-size:12px}
+  .mc-sc{font-size:17px;min-width:44px}
+  .mc-left{min-width:62px}
+  .mc-date{font-size:10px}
+  .mc-dgrid{grid-template-columns:1fr 1fr}
 }
 /* Expandable rows */
 tbody tr.mrow{cursor:pointer}
@@ -207,8 +252,11 @@ tr.erow td{padding:0!important;border-bottom:1px solid var(--border)}
     
 <!-- TROPHIES -->
 <div class="trophies-section" id="trophies">
-  <div class="tr-title">🏆 תארים והישגים</div>
-  <div class="tr-grid">
+  <div class="tr-toggle" onclick="toggleTrophies()">
+    <span>🏆 תארים והישגים <small style="color:var(--muted2);font-size:11px">(8 תארים)</small></span>
+    <span id="tr-arrow" style="color:var(--muted2);font-size:12px;transition:.2s">▼</span>
+  </div>
+  <div class="tr-grid" id="tr-grid">
     <div class="tr-card">
       <div class="tr-ico">🏆</div>
       <div class="tr-yr">2010/11</div>
@@ -228,22 +276,34 @@ tr.erow td{padding:0!important;border-bottom:1px solid var(--border)}
       <div class="tr-club">הפועל באר שבע</div>
     </div>
     <div class="tr-card">
-      <div class="tr-ico">🥇</div>
-      <div class="tr-yr">2016</div>
-      <div class="tr-name">גביע העל</div>
+      <div class="tr-ico">🏆</div>
+      <div class="tr-yr">2017/18</div>
+      <div class="tr-name">אליפות ישראל</div>
       <div class="tr-club">הפועל באר שבע</div>
     </div>
     <div class="tr-card">
       <div class="tr-ico">🥇</div>
-      <div class="tr-yr">2017</div>
-      <div class="tr-name">גביע העל</div>
+      <div class="tr-yr">2016/17</div>
+      <div class="tr-name">אלוף האלופים</div>
       <div class="tr-club">הפועל באר שבע</div>
     </div>
-    <div class="tr-card tr-ind">
-      <div class="tr-ico">⭐</div>
-      <div class="tr-yr">2011</div>
-      <div class="tr-name">שחקן הגילוי</div>
-      <div class="tr-club">אקסטרקלאסה פולין</div>
+    <div class="tr-card">
+      <div class="tr-ico">🥇</div>
+      <div class="tr-yr">2017/18</div>
+      <div class="tr-name">אלוף האלופים</div>
+      <div class="tr-club">הפועל באר שבע</div>
+    </div>
+    <div class="tr-card">
+      <div class="tr-ico">🏅</div>
+      <div class="tr-yr">2008/09</div>
+      <div class="tr-name">גביע טוטו</div>
+      <div class="tr-club">הפועל באר שבע</div>
+    </div>
+    <div class="tr-card">
+      <div class="tr-ico">🏅</div>
+      <div class="tr-yr">2007/08</div>
+      <div class="tr-name">גביע טוטו</div>
+      <div class="tr-club">מכבי חיפה</div>
     </div>
   </div>
 </div>
@@ -313,26 +373,18 @@ tr.erow td{padding:0!important;border-bottom:1px solid var(--border)}
         <option value="נבחרת">נבחרת</option>
       </select>
     </div>
+    <div class="frow">
+      <span class="flbl">מיון:</span>
+      <select class="sbox" style="flex:1;padding:5px 8px" onchange="srtSel(this.value)">
+        <option value="ts-d">תאריך ↓ (חדש ראשון)</option>
+        <option value="ts-a">תאריך ↑ (ישן ראשון)</option>
+        <option value="s-a">עונה</option>
+        <option value="md-a">מחזור</option>
+      </select>
+    </div>
   </div>
   <div class="pgbar"><span id="inf1"></span><div class="pgn" id="pn1"></div></div>
-  <div class="tw">
-    <table>
-      <thead><tr>
-        <th onclick="srt('ts')">📅 תאריך ↕</th>
-        <th class="hm" onclick="srt('s')">עונה</th>
-        <th class="hm" onclick="srt('md')">מחזור</th>
-        <th>קבוצת בית &nbsp;—&nbsp; קבוצת חוץ</th>
-        <th>✓✗=</th>
-        <th class="hm">מפעל</th>
-        <th class="hm" onclick="srt('st')">איצטדיון</th>
-        <th class="hm" onclick="srt('rf')">שופט</th>
-        <th class="hm" onclick="srt('co')">מאמן</th>
-        <th class="hm" onclick="srt('fn')">👥</th>
-        <th>מה עשה?</th>
-      </tr></thead>
-      <tbody id="tb"></tbody>
-    </table>
-  </div>
+  <div class="match-list" id="tb"></div>
   <div class="pgbar"><span id="inf2"></span><div class="pgn" id="pn2"></div></div>
 </div>
 
@@ -738,7 +790,9 @@ var fClub='all',fRes='all',fFw='all',fSeason='all',fQ='',sCol='ts',sAsc=true,pag
 var gPage=1,gPer=30,aPage=1,aPer=30;
 var currentTab='matches';
 function setSeason(v){fSeason=v;page=1;go();}
+function srtSel(v){var p=v.split("-");sCol=p[0];sAsc=p[1]==="a";page=1;go();}
 function setClub(v){fClub=v;page=1;go();}
+function toggleTrophies(){var g=document.getElementById("tr-grid"),a=document.getElementById("tr-arrow");if(!g)return;g.classList.toggle("hidden");a.textContent=g.classList.contains("hidden")?"▶":"▼";}
 function setFw(v){fFw=v;page=1;go();}
 function showToast(msg){var t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(function(){t.style.opacity='0';setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},300);},2200);}
 function shareTab(){var url=window.location.origin+window.location.pathname+'?tab='+currentTab;if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){showToast('קישור הועתק! 📋');});}else{var ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('קישור הועתק! 📋');}}
@@ -787,59 +841,60 @@ function draw(){
   for(var i=0;i<sl.length;i++){
     var m=sl[i];
     var rid='r'+i;
-    var rc=m.r==='W'?'rW':m.r==='L'?'rL':m.r==='D'?'rD':'';
+    var mc=m.r==='W'?'mcW':m.r==='L'?'mcL':m.r==='D'?'mcD':'';
     var rb=m.r==='W'?'<div class="rb rbW">נ</div>':m.r==='L'?'<div class="rb rbL">ה</div>':m.r==='D'?'<div class="rb rbD">ת</div>':'<div class="rb rbQ">?</div>';
     var fpc=FPC[m.fc]||'fpN';
     var fans=m.fn>0?m.fn.toLocaleString():'-';
     var ex=(m.g?'⚽ ':'')+(m.as?'🎯 ':'');
     var hBold=m.ih, aBold=!m.ih&&m.mc!=='';
-    var sc=m.sc||'-';
-    var scCls='scbx'+(m.r==='W'?' scW':m.r==='D'?' scD':m.r==='L'?' scL':'');
-    html+='<tr class="mrow '+rc+'" id="'+rid+'" onclick="toggleRow(\''+rid+'\')">';
+    var sc=m.sc||'–';
     var ms=MILESTONES[m.ts]||null;
-    html+='<td style="color:var(--muted2);font-size:12px">'+(ms?'🏅 ':'')+m.d+'</td>';
-    html+='<td class="hm" style="color:var(--muted2);font-size:11px">'+m.s+'</td>';
-    html+='<td class="hm" style="color:var(--muted2);font-size:12px;text-align:center">'+(m.md||'-')+'</td>';
-    html+='<td><div class="match-cell">';
-    html+='<div class="tm home">'+tlogo(m.h)+'<span class="tname'+(hBold?' bold':'')+'">'+m.h+'</span></div>';
-    html+='<div class="'+scCls+'">'+sc+'</div>';
-    html+='<div class="tm away"><span class="tname'+(aBold?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a)+'</div>';
-    html+='</div></td>';
-    html+='<td>'+rb+'</td>';
-    html+='<td class="hm"><span class="fp '+fpc+'">'+(m.fc||'')+'</span></td>';
-    html+='<td class="hm" style="font-size:12px;color:var(--muted2)">'+(m.st||'')+'</td>';
-    html+='<td class="hm sm">'+(m.rf||'-')+'</td>';
-    html+='<td class="hm sm">'+(m.co||'-')+'</td>';
-    html+='<td class="hm" style="font-size:12px;color:var(--muted2)">'+fans+'</td>';
-    html+='<td class="act" title="לחץ להרחבה">'+ex+(m.ac||'')+'</td>';
-    html+='</tr>';
-    // Detail row (hidden by default)
     var epFans=m.fn>0?m.fn.toLocaleString()+' צופים':'—';
     var epGoal=(m.g?'<span style="color:var(--gc)">⚽ כבש שער</span>':'')+(m.as?'<span style="color:var(--ac)"> 🎯 בישל</span>':'');
-    html+='<tr class="erow" id="exp-'+rid+'" style="display:none">';
-    html+='<td colspan="11"><div class="ep">';
-    html+='<div class="ep-i"><div class="ep-l">מחזור</div><div class="ep-v">'+(m.md||'—')+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">עונה</div><div class="ep-v">'+m.s+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">תחרות מלאה</div><div class="ep-v">'+m.fw+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">אצטדיון</div><div class="ep-v">'+(m.st||'—')+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">קהל</div><div class="ep-v">'+epFans+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">שופט</div><div class="ep-v">'+(m.rf||'—')+'</div></div>';
-    html+='<div class="ep-i"><div class="ep-l">מאמן</div><div class="ep-v">'+(m.co||'—')+'</div></div>';
-    if(epGoal)html+='<div class="ep-i"><div class="ep-l">הישגים</div><div class="ep-v">'+epGoal+'</div></div>';
-    if(ms)html+='<div class="ep-i" style="background:rgba(227,179,65,.08);border-radius:5px"><div class="ep-l" style="color:var(--draw)">🏅 אבן דרך</div><div class="ep-v" style="color:var(--draw);font-weight:600">'+ms.join(' · ')+'</div></div>';
-    html+='<div class="ep-i ep-ac"><div class="ep-l">מה עשה</div><div class="ep-v">'+(m.ac||'—')+'</div></div>';
-    html+='</div></td>';
-    html+='</tr>';
+    html+='<div class="match-card '+mc+'" id="mc-'+rid+'" onclick="toggleRow(''+rid+'')">';
+    html+='<div class="mc-top">';
+    html+='<div class="mc-left">';
+    html+='<div class="mc-date">'+(ms?'🏅 ':'')+m.d+'</div>';
+    html+='<div class="mc-szn">'+m.s+'</div>';
+    html+='<span class="fp '+fpc+'" style="font-size:10px;padding:1px 5px">'+(m.fc||'')+'</span>';
+    html+='</div>';
+    html+='<div class="mc-body">';
+    html+='<div class="mc-teams">';
+    html+='<div class="mc-team home">'+tlogo(m.h,16)+'<span class="mc-tn'+(hBold?' bold':'')+'">'+m.h+'</span></div>';
+    html+='<div class="mc-sc">'+sc+'</div>';
+    html+='<div class="mc-team away"><span class="mc-tn'+(aBold?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,16)+'</div>';
+    html+='</div>';
+    var subParts=[];
+    if(m.st)subParts.push(m.st);
+    if(m.md)subParts.push('מחזור '+m.md);
+    if(ex.trim())subParts.push(ex.trim());
+    if(subParts.length)html+='<div class="mc-sub">'+subParts.join(' · ')+'</div>';
+    html+='</div>';
+    html+='<div class="mc-right">'+rb+'</div>';
+    html+='</div>';
+    html+='<div class="mc-detail" id="exp-'+rid+'">';
+    html+='<div class="mc-dgrid">';
+    html+='<div class="mc-di"><div class="mc-dl">מחזור</div><div class="mc-dv">'+(m.md||'—')+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">עונה</div><div class="mc-dv">'+m.s+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">תחרות</div><div class="mc-dv">'+m.fw+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">אצטדיון</div><div class="mc-dv">'+(m.st||'—')+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">קהל</div><div class="mc-dv">'+epFans+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">שופט</div><div class="mc-dv">'+(m.rf||'—')+'</div></div>';
+    html+='<div class="mc-di"><div class="mc-dl">מאמן</div><div class="mc-dv">'+(m.co||'—')+'</div></div>';
+    if(epGoal)html+='<div class="mc-di" style="grid-column:1/-1"><div class="mc-dl">הישגים</div><div class="mc-dv">'+epGoal+'</div></div>';
+    if(ms)html+='<div class="mc-di" style="grid-column:1/-1;background:rgba(227,179,65,.08);border-radius:6px;padding:6px"><div class="mc-dl" style="color:var(--draw)">🏅 אבן דרך</div><div class="mc-dv" style="color:var(--draw);font-weight:700">'+ms.join(' · ')+'</div></div>';
+    html+='<div class="mc-di" style="grid-column:1/-1"><div class="mc-dl">מה עשה</div><div class="mc-dv">'+(m.ac||'—')+'</div></div>';
+    html+='</div></div></div>';
   }
   document.getElementById('tb').innerHTML=html;
   var inf='מציג '+Math.min(s0+1,tot)+'–'+Math.min(s0+PER,tot)+' מתוך '+tot;
   document.getElementById('inf1').textContent=inf;
   document.getElementById('inf2').textContent=inf;
   var ph='';
-  if(page>1)ph+='<button onclick="pg('+(page-1)+')">◄</button>';
+  if(page>1)ph+='<button onclick="pg('+(page-1)+')">&#9668;</button>';
   var ps=Math.max(1,page-2),pe=Math.min(pages,page+2);
   for(var p=ps;p<=pe;p++)ph+='<button class="'+(p===page?'cur':'')+'" onclick="pg('+p+')">'+p+'</button>';
-  if(page<pages)ph+='<button onclick="pg('+(page+1)+')">►</button>';
+  if(page<pages)ph+='<button onclick="pg('+(page+1)+')">&#9658;</button>';
   document.getElementById('pn1').innerHTML=ph;
   document.getElementById('pn2').innerHTML=ph;
 }
@@ -1016,8 +1071,8 @@ function renderGoals(){
 
 /* ── Row expand ─────────────────────────────────────────── */
 function toggleRow(rid){
-  var el=document.getElementById('exp-'+rid);
-  if(el)el.style.display=el.style.display==='none'?'table-row':'none';
+  var card=document.getElementById('mc-'+rid);
+  if(card){card.classList.toggle('expanded');window.scrollTo({top:card.getBoundingClientRect().top+window.scrollY-80,behavior:'smooth'});}
 }
 
 /* ── Assists tab ─────────────────────────────────────────── */
