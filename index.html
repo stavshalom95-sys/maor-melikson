@@ -195,10 +195,8 @@ tbody tr:last-child td{border-bottom:none}
 .mcL .mc-sc{color:var(--loss)}
 .mc-ms{font-size:13px;flex-shrink:0}
 .mc-trow{display:flex;align-items:center;gap:4px;margin-bottom:4px}
-.mc-team-l,.mc-team-r{flex:1;min-width:0;display:flex;align-items:center;gap:3px}
-.mc-team-l .mc-tn,.mc-team-r .mc-tn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:600}
-.mc-tn.bold{font-weight:800}
-.mc-vs{color:var(--muted2);font-weight:400;margin:0 2px;flex-shrink:0}
+.mc-teams-txt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:600}
+.mc-vs{color:var(--muted2);font-weight:400;margin:0 3px}
 .mc-badge-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:4px}
 .mc-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
 .mc-mi{font-size:11px;color:var(--muted2)}
@@ -805,6 +803,7 @@ var LOGOS = {
   "נבחרת קפריסין עד 21":{l:'https://raw.githubusercontent.com/stavshalom95-sys/maor-melikson/main/image/Cypres.png',c:'#FF8C00'},
 };
 
+function dn(t){return t?t.replace(/^נבחרת /,''):t;}
 function tlogo(team,sz){
   if(!sz)sz=20;
   var m=LOGOS[team];
@@ -880,7 +879,7 @@ function draw(){
     html+='<div class="mc-top">';
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+sc+'</span>'+rb+(ms?'<span class="mc-ms">🏅</span>':'')+'</div>';
-    html+='<div class="mc-trow"><div class="mc-team-l">'+tlogo(m.h,15)+'<span class="mc-tn'+(hBold?' bold':'')+'">'+m.h+'</span></div><span class="mc-vs">נגד</span><div class="mc-team-r"><span class="mc-tn'+(aBold?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,15)+'</div></div>';
+    html+='<div class="mc-trow">'+tlogo(m.h,14)+'<span class="mc-teams-txt"><span'+(hBold?' style="font-weight:800"':'')+'>'+dn(m.h)+'</span><span class="mc-vs">מול</span><span'+(aBold?' style="font-weight:800"':'')+'>'+dn(m.a)+'</span></span>'+tlogo(m.a,14)+'</div>';
     var metaParts=[];
     var isCup=m.fw&&m.fw.indexOf('גביע')>=0;
     if(m.st)metaParts.push('📍 '+m.st);
@@ -1057,7 +1056,7 @@ function renderGoals(){
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+m.sc+'</span>'+rb+'</div>';
     if(gbadge)html+='<div class="mc-badge-row">'+gbadge+'</div>';
-    html+='<div class="mc-trow"><div class="mc-team-l">'+tlogo(m.h,15)+'<span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span></div><span class="mc-vs">נגד</span><div class="mc-team-r"><span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,15)+'</div></div>';
+    html+='<div class="mc-trow">'+tlogo(m.h,14)+'<span class="mc-teams-txt"><span'+(m.ih?' style="font-weight:800"':'')+'>'+dn(m.h)+'</span><span class="mc-vs">מול</span><span'+(!m.ih?' style="font-weight:800"':'')+'>'+dn(m.a)+'</span></span>'+tlogo(m.a,14)+'</div>';
     var gmeta=[];
     if(m.st)gmeta.push('📍 '+m.st);
     if(gk)gmeta.push('🧤 '+gk);
@@ -1162,7 +1161,7 @@ function renderAssists(){
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+m.sc+'</span>'+rb+'</div>';
     html+='<div class="mc-badge-row">'+abadge+'</div>';
-    html+='<div class="mc-trow"><div class="mc-team-l">'+tlogo(m.h,15)+'<span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span></div><span class="mc-vs">נגד</span><div class="mc-team-r"><span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,15)+'</div></div>';
+    html+='<div class="mc-trow">'+tlogo(m.h,14)+'<span class="mc-teams-txt"><span'+(m.ih?' style="font-weight:800"':'')+'>'+dn(m.h)+'</span><span class="mc-vs">מול</span><span'+(!m.ih?' style="font-weight:800"':'')+'>'+dn(m.a)+'</span></span>'+tlogo(m.a,14)+'</div>';
     var ameta=[];
     if(m.st)ameta.push('📍 '+m.st);
     if(tgtsStr&&tgtsStr!=='—')ameta.push('🎯 '+tgtsStr);
