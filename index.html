@@ -188,17 +188,18 @@ tbody tr:last-child td{border-bottom:none}
 .match-card.mcL{border-right:3px solid var(--loss)}
 .mc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .mc-main{flex:1;min-width:0}
-.mc-result{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}
-.mc-sc{font-size:22px;font-weight:900;line-height:1}
+.mc-trow{display:flex;align-items:center;gap:4px;margin-bottom:5px}
+.mc-team-h{flex:1;min-width:0;display:flex;align-items:center;gap:3px;justify-content:flex-end}
+.mc-team-a{flex:1;min-width:0;display:flex;align-items:center;gap:3px}
+.mc-tn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:600}
+.mc-tn.bold{font-weight:800}
+.mc-score-col{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:44px}
+.mc-sc{font-size:17px;font-weight:900;line-height:1}
 .mcW .mc-sc{color:var(--win)}
 .mcD .mc-sc{color:var(--draw)}
 .mcL .mc-sc{color:var(--loss)}
-.mc-ms{font-size:14px}
-.mc-trow{font-size:13px;font-weight:600;display:flex;align-items:center;gap:4px;
-  margin-bottom:4px;overflow:hidden}
-.mc-tn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px}
-.mc-tn.bold{font-weight:800}
-.mc-vs{color:var(--muted2);font-weight:400;flex-shrink:0;margin:0 2px;font-size:11px}
+.mc-ms{font-size:11px}
+.mc-badge-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:4px}
 .mc-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
 .mc-mi{font-size:11px;color:var(--muted2)}
 .mc-side{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:3px;min-width:56px}
@@ -879,8 +880,11 @@ function draw(){
     html+='<div class="match-card '+mc+'" id="mc-'+rid+'" onclick="toggleRow(\''+rid+'\')">';
     html+='<div class="mc-top">';
     html+='<div class="mc-main">';
-    html+='<div class="mc-result"><span class="mc-sc">'+sc+'</span>'+rb+(ms?'<span class="mc-ms">🏅</span>':'')+'</div>';
-    html+='<div class="mc-trow">'+tlogo(m.h,16)+'<span class="mc-tn'+(hBold?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(aBold?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,16)+'</div>';
+    html+='<div class="mc-trow">';
+    html+='<div class="mc-team-h"><span class="mc-tn'+(hBold?' bold':'')+'">'+m.h+'</span>'+tlogo(m.h,14)+'</div>';
+    html+='<div class="mc-score-col"><span class="mc-sc">'+sc+'</span>'+rb+(ms?'<span class="mc-ms">🏅</span>':'')+'</div>';
+    html+='<div class="mc-team-a">'+tlogo(m.a,14)+'<span class="mc-tn'+(aBold?' bold':'')+'">'+m.a+'</span></div>';
+    html+='</div>';
     var metaParts=[];
     if(m.st)metaParts.push('📍 '+m.st);
     if(m.md)metaParts.push('מ\' '+m.md);
@@ -1054,8 +1058,12 @@ function renderGoals(){
     html+='<div class="match-card '+mc+'" id="mc-'+gid+'" onclick="toggleRow(\''+gid+'\')">';
     html+='<div class="mc-top">';
     html+='<div class="mc-main">';
-    html+='<div class="mc-result"><span class="mc-sc">'+m.sc+'</span>'+rb+'<span style="margin-right:4px">'+gbadge+'</span></div>';
-    html+='<div class="mc-trow">'+tlogo(m.h,16)+'<span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,16)+'</div>';
+    html+='<div class="mc-trow">';
+    html+='<div class="mc-team-h"><span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span>'+tlogo(m.h,14)+'</div>';
+    html+='<div class="mc-score-col"><span class="mc-sc">'+m.sc+'</span>'+rb+'</div>';
+    html+='<div class="mc-team-a">'+tlogo(m.a,14)+'<span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span></div>';
+    html+='</div>';
+    if(gbadge)html+='<div class="mc-badge-row">'+gbadge+'</div>';
     var gmeta=[];
     if(m.st)gmeta.push('📍 '+m.st);
     if(gk)gmeta.push('🧤 '+gk);
@@ -1158,8 +1166,12 @@ function renderAssists(){
     html+='<div class="match-card '+mc+'" id="mc-'+aid+'" onclick="toggleRow(\''+aid+'\')">';
     html+='<div class="mc-top">';
     html+='<div class="mc-main">';
-    html+='<div class="mc-result"><span class="mc-sc">'+m.sc+'</span>'+rb+'<span style="margin-right:4px">'+abadge+'</span></div>';
-    html+='<div class="mc-trow">'+tlogo(m.h,16)+'<span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span><span class="mc-vs">נגד</span><span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,16)+'</div>';
+    html+='<div class="mc-trow">';
+    html+='<div class="mc-team-h"><span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span>'+tlogo(m.h,14)+'</div>';
+    html+='<div class="mc-score-col"><span class="mc-sc">'+m.sc+'</span>'+rb+'</div>';
+    html+='<div class="mc-team-a">'+tlogo(m.a,14)+'<span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span></div>';
+    html+='</div>';
+    html+='<div class="mc-badge-row">'+abadge+'</div>';
     var ameta=[];
     if(m.st)ameta.push('📍 '+m.st);
     if(tgtsStr&&tgtsStr!=='—')ameta.push('🎯 '+tgtsStr);
