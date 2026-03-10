@@ -325,7 +325,8 @@ tr.erow td{padding:0!important;border-bottom:1px solid var(--border)}
     <button class="fc" data-af="fc" data-av="אירופה" onclick="setAF(this)">אירופה</button>
     <button class="fc" data-af="fc" data-av="נבחרת" onclick="setAF(this)">נבחרת</button>
   </div>
-  <div id="assist-grid"></div>
+  <div id="assist-pn" class="pn" style="margin-bottom:8px"></div>
+    <div id="assist-grid"></div>
 </div>
 
 <!-- GOALS -->
@@ -347,7 +348,8 @@ tr.erow td{padding:0!important;border-bottom:1px solid var(--border)}
     <button class="fc" data-gf="fc" data-gv="אירופה" onclick="setGF(this)">אירופה</button>
     <button class="fc" data-gf="fc" data-gv="נבחרת" onclick="setGF(this)">נבחרת</button>
   </div>
-  <div id="goal-grid"></div>
+  <div id="goal-pn" class="pn" style="margin-bottom:8px"></div>
+    <div id="goal-grid"></div>
 </div>
 
 <!-- CHARTS -->
@@ -648,6 +650,7 @@ function tlogo(team,sz){
 }
 
 var fClub='all',fRes='all',fFw='all',fSeason='all',fQ='',sCol='ts',sAsc=true,page=1;
+var gPage=1,gPer=30,aPage=1,aPer=30;
 var currentTab='matches';
 function setSeason(v){fSeason=v;page=1;go();}
 function setClub(v){fClub=v;page=1;go();}
@@ -757,6 +760,8 @@ function draw(){
 }
 
 function pg(n){page=n;draw();window.scrollTo(0,0);}
+function gPg(n){gPage=n;renderGoals();window.scrollTo(0,0);}
+function aPg(n){aPage=n;renderAssists();window.scrollTo(0,0);}
 
 function kpis(d){
   var w=0,dr=0,l=0,g=0,a=0;
@@ -788,7 +793,7 @@ function switchTab(name){
 
 /* ── Goals tab ─────────────────────────────────────────── */
 var gfType='all', gfFc='all';
-function setGF(el){
+function setGF(el){gPage=1;
   var ft=el.getAttribute('data-gf'), fv=el.getAttribute('data-gv');
   document.querySelectorAll('[data-gf="'+ft+'"]').forEach(function(b){b.classList.remove('on');});
   el.classList.add('on');
@@ -828,6 +833,7 @@ function parseGoalInfo(ac){
 
 var _allGoals=null;
 function buildGoals(){
+  gPage=1;
   _allGoals=ALL.filter(function(m){return m.g;}).sort(function(a,b){return b.ts-a.ts;});
   var pens=_allGoals.filter(function(m){return (m.ac||'').includes('פנדל');}).length;
   var heads=_allGoals.filter(function(m){return (m.ac||'').includes('ראש');}).length;
@@ -851,9 +857,15 @@ function renderGoals(){
   });
   if(!goals.length){
     document.getElementById('goal-grid').innerHTML='<div class="gl-empty">אין שערים בסינון זה</div>';
+    document.getElementById('goal-pn').innerHTML='';
     return;
   }
-  var html='<div class="tw"><table><thead><tr><th>תאריך</th><th>משחק</th><th>תוצאה</th><th class="hm">מפעל</th><th class="hm">סוג</th><th class="hm">שוער</th></tr></thead><tbody>';
+  var gTot=goals.length,gPages=Math.ceil(gTot/gPer)||1;
+  if(gPage>gPages)gPage=gPages;
+  var gS0=(gPage-1)*gPer;
+  goals=goals.slice(gS0,gS0+gPer);
+  var html='<div class="gl-info" style="font-size:11px;color:var(--muted2);margin-bottom:6px">מציג '+(gS0+1)+'–'+Math.min(gS0+gPer,gTot)+' מתוך '+gTot+' שערים</div>';
+  html+='<div class="tw"><table><thead><tr><th>תאריך</th><th>משחק</th><th>תוצאה</th><th class="hm">מפעל</th><th class="hm">סוג</th><th class="hm">שוער</th></tr></thead><tbody>';
   for(var i=0;i<goals.length;i++){
     var m=goals[i];
     var gid='g'+i;
@@ -908,6 +920,13 @@ function renderGoals(){
   summHtml+='</tbody></table></div>';
   document.getElementById('goal-grid').innerHTML=html+'<div id="goal-summary">'+summHtml+'</div>';
   document.getElementById('goal-summary').style.display=(gfType==='all'&&gfFc==='all')?'block':'none';
+  var gph='';
+  if(gPage>1)gph+='<button class="pn-btn" onclick="gPg('+(gPage-1)+')">◄</button>';
+  var gps2=Math.max(1,gPage-2),gpe2=Math.min(gPages,gPage+2);
+  for(var gpi=gps2;gpi<=gpe2;gpi++)gph+='<button class="pn-btn'+(gpi===gPage?' cur':'')
+    +'" onclick="gPg('+gpi+')">'+gpi+'</button>';
+  if(gPage<gPages)gph+='<button class="pn-btn" onclick="gPg('+(gPage+1)+')">►</button>';
+  document.getElementById('goal-pn').innerHTML=gph;
 }
 
 /* ── Row expand ─────────────────────────────────────────── */
@@ -918,7 +937,7 @@ function toggleRow(rid){
 
 /* ── Assists tab ─────────────────────────────────────────── */
 var afFc='all';
-function setAF(el){
+function setAF(el){aPage=1;
   document.querySelectorAll('[data-af="fc"]').forEach(function(b){b.classList.remove('on');});
   el.classList.add('on');
   afFc=el.getAttribute('data-av');
@@ -965,8 +984,14 @@ function renderAssists(){
     if(afFc!=='all'&&m.fc!==afFc)return false;
     return true;
   });
-  if(!assists.length){document.getElementById('assist-grid').innerHTML='<div class="gl-empty">אין בישולים בסינון זה</div>';return;}
-  var html='<div class="tw"><table><thead><tr><th>תאריך</th><th>משחק</th><th>תוצאה</th><th class="hm">מפעל</th><th class="hm">למי בישל</th></tr></thead><tbody>';
+  if(!assists.length){document.getElementById('assist-grid').innerHTML='<div class="gl-empty">אין בישולים בסינון זה</div>';
+  document.getElementById('assist-pn').innerHTML='';return;}
+  var aTot=assists.length,aPages=Math.ceil(aTot/aPer)||1;
+  if(aPage>aPages)aPage=aPages;
+  var aS0=(aPage-1)*aPer;
+  assists=assists.slice(aS0,aS0+aPer);
+  var html='<div class="gl-info" style="font-size:11px;color:var(--muted2);margin-bottom:6px">מציג '+(aS0+1)+'–'+Math.min(aS0+aPer,aTot)+' מתוך '+aTot+' בישולים</div>';
+  html+='<div class="tw"><table><thead><tr><th>תאריך</th><th>משחק</th><th>תוצאה</th><th class="hm">מפעל</th><th class="hm">למי בישל</th></tr></thead><tbody>';
   for(var i=0;i<assists.length;i++){
     var m=assists[i];
     var aid='a'+i;
@@ -1008,6 +1033,12 @@ function renderAssists(){
   }
   html+='</tbody></table></div>';
   document.getElementById('assist-grid').innerHTML=html;
+  var aph='';
+  if(aPage>1)aph+='<button class="pn-btn" onclick="aPg('+(aPage-1)+')">◄</button>';
+  var aps=Math.max(1,aPage-2),ape=Math.min(aPages,aPage+2);
+  for(var api=aps;api<=ape;api++)aph+='<button class="pn-btn'+(api===aPage?' cur':'')+'" onclick="aPg('+api+')">'+api+'</button>';
+  if(aPage<aPages)aph+='<button class="pn-btn" onclick="aPg('+(aPage+1)+')">►</button>';
+  document.getElementById('assist-pn').innerHTML=aph;
 }
 
 
