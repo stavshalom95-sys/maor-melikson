@@ -307,7 +307,6 @@ tr.erow td{padding:0!important;border-bottom:1px solid var(--border)}
   </div>
 </div>
 
-<div class="ad-w"><div class="ad-b">ADVERTISEMENT · Google AdSense</div></div>
 
 <div class="main">
 
@@ -881,7 +880,7 @@ function draw(){
     html+='<div class="mc-top">';
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+sc+'</span>'+rb+(ms?'<span class="mc-ms">🏅</span>':'')+'</div>';
-    html+='<div class="mc-trow"><div class="mc-team-l">'+tlogo(m.h,15)+'<span class="mc-tn'+(hBold?' bold':'')+'">'+m.h+'</span></div><span class="mc-vs">נגד</span><div class="mc-team-r">'+tlogo(m.a,15)+'<span class="mc-tn'+(aBold?' bold':'')+'">'+m.a+'</span></div></div>';
+    html+='<div class="mc-trow"><div class="mc-team-l">'+tlogo(m.h,15)+'<span class="mc-tn'+(hBold?' bold':'')+'">'+m.h+'</span></div><span class="mc-vs">נגד</span><div class="mc-team-r"><span class="mc-tn'+(aBold?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,15)+'</div></div>';
     var metaParts=[];
     var isCup=m.fw&&m.fw.indexOf('גביע')>=0;
     if(m.st)metaParts.push('📍 '+m.st);
@@ -1058,7 +1057,7 @@ function renderGoals(){
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+m.sc+'</span>'+rb+'</div>';
     if(gbadge)html+='<div class="mc-badge-row">'+gbadge+'</div>';
-    html+='<div class="mc-trow"><div class="mc-team-l">'+tlogo(m.h,15)+'<span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span></div><span class="mc-vs">נגד</span><div class="mc-team-r">'+tlogo(m.a,15)+'<span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span></div></div>';
+    html+='<div class="mc-trow"><div class="mc-team-l">'+tlogo(m.h,15)+'<span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span></div><span class="mc-vs">נגד</span><div class="mc-team-r"><span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,15)+'</div></div>';
     var gmeta=[];
     if(m.st)gmeta.push('📍 '+m.st);
     if(gk)gmeta.push('🧤 '+gk);
@@ -1163,7 +1162,7 @@ function renderAssists(){
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+m.sc+'</span>'+rb+'</div>';
     html+='<div class="mc-badge-row">'+abadge+'</div>';
-    html+='<div class="mc-trow"><div class="mc-team-l">'+tlogo(m.h,15)+'<span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span></div><span class="mc-vs">נגד</span><div class="mc-team-r">'+tlogo(m.a,15)+'<span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span></div></div>';
+    html+='<div class="mc-trow"><div class="mc-team-l">'+tlogo(m.h,15)+'<span class="mc-tn'+(m.ih?' bold':'')+'">'+m.h+'</span></div><span class="mc-vs">נגד</span><div class="mc-team-r"><span class="mc-tn'+(!m.ih?' bold':'')+'">'+m.a+'</span>'+tlogo(m.a,15)+'</div></div>';
     var ameta=[];
     if(m.st)ameta.push('📍 '+m.st);
     if(tgtsStr&&tgtsStr!=='—')ameta.push('🎯 '+tgtsStr);
