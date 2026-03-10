@@ -115,7 +115,7 @@ tbody tr:last-child td{border-bottom:none}
 .cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:11px}
 .cc{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:15px}
 .cc h3{font-size:10px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:13px}
-@media(max-width:720px){.hm{display:none}.sm{display:none}.tm.home{min-width:60px}.tm.away{min-width:60px}.tname{max-width:60px}.tabs{gap:2px;flex-wrap:wrap}.tab{font-size:10px;padding:4px 7px}.kpi{padding:6px 8px;min-width:48px}.kpi .v{font-size:18px}.hinfo h1{font-size:15px}.hero-in{gap:8px}.frow{flex-wrap:wrap;gap:4px}.fc{font-size:11px;padding:3px 7px}.tw{overflow-x:auto}.tl-lbl{width:90px;min-width:90px}}
+@media(max-width:720px){.hm{display:none}.sm{display:none}.tm.home{min-width:60px}.tm.away{min-width:60px}.tname{max-width:60px}.tabs{display:none}.kpi{padding:6px 8px;min-width:48px}.kpi .v{font-size:18px}.hinfo h1{font-size:15px}.hero-in{gap:8px}.frow{flex-wrap:wrap;gap:4px}.fc{font-size:11px;padding:3px 7px}.tw{overflow-x:auto}.tl-lbl{width:90px;min-width:90px}.ep{grid-template-columns:1fr 1fr;gap:6px 10px;padding:10px 12px}body{padding-bottom:68px}}.mob-nav{display:none}@media(max-width:720px){.mob-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);z-index:200;padding-bottom:env(safe-area-inset-bottom,0px)}.mob-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 2px 4px;border:none;background:transparent;color:var(--muted2);font-family:'Heebo',sans-serif;font-size:9px;cursor:pointer;gap:1px;transition:color .15s}.mob-nav-btn .mn-ico{font-size:18px;line-height:1}.mob-nav-btn.on{color:var(--acc)}}
 /* Expandable rows */
 tbody tr.mrow{cursor:pointer}
 tbody tr.mrow:hover td{background:rgba(31,111,235,.06)!important}
@@ -202,8 +202,9 @@ tr.erow td{padding:0!important;border-bottom:1px solid var(--border)}
     <div class="frow">
       <input class="sbox" id="srch" type="text" placeholder="🔍 חפש קבוצה, איצטדיון, שופט, מאמן, מפעל..." oninput="go()">
     </div>
-    <div class="frow" id="club-filter-btns">
-      <button class="fc on" data-ft="club" data-fv="all" onclick="setF(this)">הכול</button>
+    <div class="frow">
+      <span class="flbl">קבוצה:</span>
+      <select class="sbox" id="clubSel" style="flex:1;min-width:140px;padding:5px 8px" onchange="setClub(this.value)"><option value="all">כל הקבוצות</option></select>
     </div>
     <div class="frow">
       <span class="flbl">עונה:</span>
@@ -215,13 +216,17 @@ tr.erow td{padding:0!important;border-bottom:1px solid var(--border)}
       <button class="fc" data-ft="res" data-fv="W" onclick="setF(this)" style="color:var(--win)">✓ ניצחון</button>
       <button class="fc" data-ft="res" data-fv="D" onclick="setF(this)" style="color:var(--draw)">= תיקו</button>
       <button class="fc" data-ft="res" data-fv="L" onclick="setF(this)" style="color:var(--loss)">✗ הפסד</button>
-      <span class="flbl" style="margin-right:8px">מפעל:</span>
-      <button class="fc on" data-ft="fw" data-fv="all" onclick="setF(this)">הכול</button>
-      <button class="fc" data-ft="fw" data-fv="ליגה" onclick="setF(this)">ליגה</button>
-      <button class="fc" data-ft="fw" data-fv="גביע" onclick="setF(this)">גביע</button>
-      <button class="fc" data-ft="fw" data-fv="גביע הטוטו" onclick="setF(this)">גביע הטוטו</button>
-      <button class="fc" data-ft="fw" data-fv="אירופה" onclick="setF(this)">אירופה</button>
-      <button class="fc" data-ft="fw" data-fv="נבחרת" onclick="setF(this)">נבחרת</button>
+    </div>
+    <div class="frow">
+      <span class="flbl">מפעל:</span>
+      <select class="sbox" id="fwSel" style="flex:1;min-width:140px;padding:5px 8px" onchange="setFw(this.value)">
+        <option value="all">כל המפעלים</option>
+        <option value="ליגה">ליגה</option>
+        <option value="גביע">גביע</option>
+        <option value="גביע הטוטו">גביע הטוטו</option>
+        <option value="אירופה">אירופה</option>
+        <option value="נבחרת">נבחרת</option>
+      </select>
     </div>
   </div>
   <div class="pgbar"><span id="inf1"></span><div class="pgn" id="pn1"></div></div>
@@ -645,6 +650,8 @@ function tlogo(team,sz){
 var fClub='all',fRes='all',fFw='all',fSeason='all',fQ='',sCol='ts',sAsc=true,page=1;
 var currentTab='matches';
 function setSeason(v){fSeason=v;page=1;go();}
+function setClub(v){fClub=v;page=1;go();}
+function setFw(v){fFw=v;page=1;go();}
 function showToast(msg){var t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(function(){t.style.opacity='0';setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},300);},2200);}
 function shareTab(){var url=window.location.origin+window.location.pathname+'?tab='+currentTab;if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){showToast('קישור הועתק! 📋');});}else{var ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('קישור הועתק! 📋');}}
 var PER=50,fil=[];
@@ -764,6 +771,8 @@ function kpis(d){
 function switchTab(name){
   currentTab=name;
   try{window.history.replaceState(null,'','?tab='+name);}catch(e){}
+  var mnBtns=document.querySelectorAll('.mob-nav-btn');
+  mnBtns.forEach(function(b){b.classList.toggle('on',b.id==='mn-'+name);});
   ['matches','goals','assists','injuries','insights','charts'].forEach(function(n){
     document.getElementById('p-'+n).classList.remove('on');
     document.getElementById('t-'+n).classList.remove('on');
@@ -1045,17 +1054,18 @@ function goalKeeper(d){
 
 /* ── Club filter dynamic ───────────────────────────────────── */
 function buildClubFilter(){
-  var mainClubs=['\u05d1\u05d9\u05ea"\u05e8 \u05d9\u05e8\u05d5\u05e9\u05dc\u05d9\u05dd','\u05de\u05db\u05d1\u05d9 \u05d7\u05d9\u05e4\u05d4','\u05d4\u05e4\u05d5\u05e2\u05dc \u05db\u05e4\u05e8 \u05e1\u05d1\u05d0','\u05d4\u05e4\u05d5\u05e2\u05dc \u05d1\u05d0\u05e8 \u05e9\u05d1\u05e2','\u05d5\u05d9\u05e1\u05dc\u05d4 \u05e7\u05e8\u05d0\u05e7\u05d5\u05d1','\u05d5\u05dc\u05e0\u05e1\u05d9\u05d9\u05df','\u05e0\u05d1\u05d7\u05e8\u05ea \u05d9\u05e9\u05e8\u05d0\u05dc'];
-  var fh='<button class="fc on" data-ft="club" data-fv="all" onclick="setF(this)">\u05d4\u05db\u05d5\u05dc</button>';
-  for(var i=0;i<mainClubs.length;i++){
-    var c=mainClubs[i];
+  var clubs=[];
+  ALL.forEach(function(m){if(m.mc&&clubs.indexOf(m.mc)<0)clubs.push(m.mc);});
+  clubs.sort(function(a,b){return a.localeCompare(b,'he');});
+  var sel=document.getElementById('clubSel');
+  if(!sel)return;
+  clubs.forEach(function(c){
+    var o=document.createElement('option');
+    o.value=c;
     var lm=LOGOS[c];
-    var li=lm&&lm.l?'<img src="'+lm.l+'" width="14" height="14" style="border-radius:2px" onerror="this.style.display=\'none\'">':'';
-    var short=c.length>7?c.slice(0,7)+'\u2026':c;
-    fh+='<button class="fc" data-ft="club" data-fv="'+c.replace(/"/g,'&quot;')+'" onclick="setF(this)">'+li+short+'</button>';
-  }
-  var cfEl=document.getElementById('club-filter-btns');
-  if(cfEl)cfEl.innerHTML=fh;
+    o.text=(lm&&lm.l?'':'') + c;
+    sel.appendChild(o);
+  });
 }
 
 
@@ -1328,5 +1338,13 @@ function buildCh(){
 (function(){var t=new URLSearchParams(window.location.search).get('tab');if(t)switchTab(t);else go();})();
 
 </script>
+<div class="mob-nav" id="mob-nav">
+  <button class="mob-nav-btn on" id="mn-matches" onclick="switchTab('matches')"><span class="mn-ico">📋</span>משחקים</button>
+  <button class="mob-nav-btn" id="mn-goals" onclick="switchTab('goals')"><span class="mn-ico">⚽</span>שערים</button>
+  <button class="mob-nav-btn" id="mn-assists" onclick="switchTab('assists')"><span class="mn-ico">🎯</span>בישולים</button>
+  <button class="mob-nav-btn" id="mn-injuries" onclick="switchTab('injuries')"><span class="mn-ico">🏥</span>פציעות</button>
+  <button class="mob-nav-btn" id="mn-insights" onclick="switchTab('insights')"><span class="mn-ico">📊</span>תובנות</button>
+  <button class="mob-nav-btn" id="mn-charts" onclick="switchTab('charts')"><span class="mn-ico">📈</span>גרפים</button>
+</div>
 </body>
 </html>
