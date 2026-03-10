@@ -1114,9 +1114,9 @@ function buildAssists(){
   }
   var tk=Object.keys(targets).sort(function(a,b){return targets[b]-targets[a];});
   var topT=tk[0]||"";
-  var kh="<div class="kpi"><div class="v" style="color:var(--ac)">"+ _allAssists.length+"</div><div class="l">בישולים</div></div>";
-  kh+="<div class="kpi"><div class="v" style="color:var(--gc)">"+ tk.length+"</div><div class="l">שחקנים שונים</div></div>";
-  if(topT)kh+="<div class="kpi" style="min-width:110px"><div class="v" style="font-size:12px;color:var(--win)">"+ topT+"</div><div class="l">הכי הרבה ("+targets[topT]+")</div></div>";
+  var kh='<div class="kpi"><div class="v" style="color:var(--ac)">'+_allAssists.length+'</div><div class="l">בישולים</div></div>';
+  kh+='<div class="kpi"><div class="v" style="color:var(--gc)">'+tk.length+'</div><div class="l">שחקנים שונים</div></div>';
+  if(topT)kh+='<div class="kpi" style="min-width:110px"><div class="v" style="font-size:12px;color:var(--win)">'+topT+'</div><div class="l">הכי הרבה ('+targets[topT]+')</div></div>';
   document.getElementById("as-kpis").innerHTML=kh;
   renderAssists();
 }
