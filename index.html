@@ -90,13 +90,12 @@ tbody tr:last-child td{border-bottom:none}
 .scW{border-color:rgba(63,185,80,.4);color:var(--win)}
 .scD{border-color:rgba(210,153,34,.4);color:var(--draw)}
 .scL{border-color:rgba(248,81,73,.4);color:var(--loss)}
-.timg{width:20px;height:20px;object-fit:contain;flex-shrink:0}
+.timg{width:16px;height:16px;object-fit:contain;vertical-align:middle;border-radius:2px;margin:0 2px}
 .tfb{width:20px;height:20px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;flex-shrink:0}
 .rb{padding:2px 8px;border-radius:5px;font-size:11px;font-weight:900;letter-spacing:.3px;flex-shrink:0}
-.rbW{background:rgba(63,185,80,.12);color:var(--win);border:1px solid rgba(63,185,80,.3)}
-.rbD{background:rgba(210,153,34,.12);color:var(--draw);border:1px solid rgba(210,153,34,.3)}
-.rbL{background:rgba(248,81,73,.12);color:var(--loss);border:1px solid rgba(248,81,73,.3)}
-.rbQ{background:rgba(120,120,120,.1);color:#666;border:1px solid rgba(120,120,120,.2)}
+.win .rb{background:rgba(63,185,80,.12);color:var(--win);border:1px solid rgba(63,185,80,.3)}
+.draw .rb{background:rgba(210,153,34,.12);color:var(--draw);border:1px solid rgba(210,153,34,.3)}
+.loss .rb{background:rgba(248,81,73,.12);color:var(--loss);border:1px solid rgba(248,81,73,.3)}
 .fp{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:600}
 .fpL{background:rgba(31,111,235,.1);color:#79c0ff}
 .fpG{background:rgba(188,140,255,.1);color:#d2a8ff}
@@ -183,20 +182,19 @@ tbody tr:last-child td{border-bottom:none}
 .match-card:active{transform:scale(.99)}
 .match-card:hover{background:var(--bg3)}
 .match-card.expanded{border-color:var(--acc2)}
-.match-card.mcW{border-right:3px solid var(--win)}
-.match-card.mcD{border-right:3px solid var(--draw)}
-.match-card.mcL{border-right:3px solid var(--loss)}
+.match-card.win{border-right:3px solid var(--win)}
+.match-card.draw{border-right:3px solid var(--draw)}
+.match-card.loss{border-right:3px solid var(--loss)}
 .mc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .mc-main{flex:1;min-width:0}
 .mc-result{display:flex;align-items:center;gap:8px;margin-bottom:5px}
 .mc-sc{font-size:20px;font-weight:900;line-height:1}
-.mcW .mc-sc{color:var(--win)}
-.mcD .mc-sc{color:var(--draw)}
-.mcL .mc-sc{color:var(--loss)}
+.win .mc-sc{color:var(--win)}
+.draw .mc-sc{color:var(--draw)}
+.loss .mc-sc{color:var(--loss)}
 .mc-ms{font-size:13px;flex-shrink:0}
-.mc-trow{display:flex;align-items:center;gap:4px;margin-bottom:4px}
-.mc-teams-txt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:600}
-.mc-vs{color:var(--muted2);font-weight:400;margin:0 3px}
+.mc-trow{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:5px}
+.mc-trow .mc-vs{color:var(--muted2);font-weight:400;margin:0 4px}
 .mc-badge-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:4px}
 .mc-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
 .mc-mi{font-size:11px;color:var(--muted2)}
@@ -867,8 +865,8 @@ function draw(){
   for(var i=0;i<sl.length;i++){
     var m=sl[i];
     var rid='r'+i;
-    var mc=m.r==='W'?'mcW':m.r==='L'?'mcL':m.r==='D'?'mcD':'';
-    var rb=m.r==='W'?'<div class="rb rbW">W</div>':m.r==='L'?'<div class="rb rbL">L</div>':m.r==='D'?'<div class="rb rbD">D</div>':'<div class="rb rbQ">?</div>';
+    var mc=m.r==='W'?'win':m.r==='L'?'loss':m.r==='D'?'draw':'neutral';
+    var rb=m.r==='W'?'<span class="rb">W</span>':m.r==='L'?'<span class="rb">L</span>':m.r==='D'?'<span class="rb">D</span>':'';
     var fpc=FPC[m.fc]||'fpN';
     var sc=m.sc||'–';
     var ms=MILESTONES[m.ts]||null;
@@ -879,7 +877,7 @@ function draw(){
     html+='<div class="mc-top">';
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+sc+'</span>'+rb+(ms?'<span class="mc-ms">🏅</span>':'')+'</div>';
-    html+='<div class="mc-trow">'+tlogo(m.h,14)+'<span class="mc-teams-txt"><span'+(hBold?' style="font-weight:800"':'')+'>'+dn(m.h)+'</span><span class="mc-vs">מול</span><span'+(aBold?' style="font-weight:800"':'')+'>'+dn(m.a)+'</span></span>'+tlogo(m.a,14)+'</div>';
+    html+='<div class="mc-trow">'+tlogo(m.h,16)+dn(m.h)+'<span class="mc-vs">מול</span>'+dn(m.a)+tlogo(m.a,16)+'</div>';
     var metaParts=[];
     var isCup=m.fw&&m.fw.indexOf('גביע')>=0;
     if(m.st)metaParts.push('📍 '+m.st);
@@ -1040,8 +1038,8 @@ function renderGoals(){
   for(var i=0;i<goals.length;i++){
     var m=goals[i];
     var gid='g'+i;
-    var mc=m.r==='W'?'mcW':m.r==='L'?'mcL':m.r==='D'?'mcD':'';
-    var rb=m.r==='W'?'<div class="rb rbW">W</div>':m.r==='L'?'<div class="rb rbL">L</div>':m.r==='D'?'<div class="rb rbD">D</div>':'<div class="rb rbQ">?</div>';
+    var mc=m.r==='W'?'win':m.r==='L'?'loss':m.r==='D'?'draw':'neutral';
+    var rb=m.r==='W'?'<span class="rb">W</span>':m.r==='L'?'<span class="rb">L</span>':m.r==='D'?'<span class="rb">D</span>':'';
     var fpc=FPC[m.fc]||'fpN';
     var gbadge=goalTypeBadge(m.d,m.ac||'');
     var gi2=parseGoalInfo(m.ac||'');
@@ -1056,7 +1054,7 @@ function renderGoals(){
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+m.sc+'</span>'+rb+'</div>';
     if(gbadge)html+='<div class="mc-badge-row">'+gbadge+'</div>';
-    html+='<div class="mc-trow">'+tlogo(m.h,14)+'<span class="mc-teams-txt"><span'+(m.ih?' style="font-weight:800"':'')+'>'+dn(m.h)+'</span><span class="mc-vs">מול</span><span'+(!m.ih?' style="font-weight:800"':'')+'>'+dn(m.a)+'</span></span>'+tlogo(m.a,14)+'</div>';
+    html+='<div class="mc-trow">'+tlogo(m.h,16)+dn(m.h)+'<span class="mc-vs">מול</span>'+dn(m.a)+tlogo(m.a,16)+'</div>';
     var gmeta=[];
     if(m.st)gmeta.push('📍 '+m.st);
     if(gk)gmeta.push('🧤 '+gk);
@@ -1147,8 +1145,8 @@ function renderAssists(){
   for(var i=0;i<assists.length;i++){
     var m=assists[i];
     var aid='a'+i;
-    var mc=m.r==='W'?'mcW':m.r==='L'?'mcL':m.r==='D'?'mcD':'';
-    var rb=m.r==='W'?'<div class="rb rbW">W</div>':m.r==='L'?'<div class="rb rbL">L</div>':m.r==='D'?'<div class="rb rbD">D</div>':'<div class="rb rbQ">?</div>';
+    var mc=m.r==='W'?'win':m.r==='L'?'loss':m.r==='D'?'draw':'neutral';
+    var rb=m.r==='W'?'<span class="rb">W</span>':m.r==='L'?'<span class="rb">L</span>':m.r==='D'?'<span class="rb">D</span>':'';
     var fpc=FPC[m.fc]||'fpN';
     var tgts=parseAssistTargets(m.ac||'');
     var tgtsStr=tgts.join(', ')||'—';
@@ -1161,7 +1159,7 @@ function renderAssists(){
     html+='<div class="mc-main">';
     html+='<div class="mc-result"><span class="mc-sc">'+m.sc+'</span>'+rb+'</div>';
     html+='<div class="mc-badge-row">'+abadge+'</div>';
-    html+='<div class="mc-trow">'+tlogo(m.h,14)+'<span class="mc-teams-txt"><span'+(m.ih?' style="font-weight:800"':'')+'>'+dn(m.h)+'</span><span class="mc-vs">מול</span><span'+(!m.ih?' style="font-weight:800"':'')+'>'+dn(m.a)+'</span></span>'+tlogo(m.a,14)+'</div>';
+    html+='<div class="mc-trow">'+tlogo(m.h,16)+dn(m.h)+'<span class="mc-vs">מול</span>'+dn(m.a)+tlogo(m.a,16)+'</div>';
     var ameta=[];
     if(m.st)ameta.push('📍 '+m.st);
     if(tgtsStr&&tgtsStr!=='—')ameta.push('🎯 '+tgtsStr);
