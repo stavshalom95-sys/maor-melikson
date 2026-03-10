@@ -198,7 +198,7 @@ tbody tr:last-child td{border-bottom:none}
 .mc-badge-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:4px}
 .mc-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
 .mc-mi{font-size:11px;color:var(--muted2)}
-.mc-side{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:3px;min-width:56px}
+.mc-side{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
 .mc-date{font-size:11px;color:var(--muted2);font-weight:600}
 .mc-exp{font-size:11px;color:var(--muted2);margin-top:2px}
 .mc-detail{display:none}
@@ -886,8 +886,7 @@ function draw(){
     if(metaParts.length)html+='<div class="mc-meta">'+metaParts.map(function(p){return'<span class="mc-mi">'+p+'</span>';}).join('')+'</div>';
     html+='</div>';
     html+='<div class="mc-side">';
-    html+='<div class="mc-date">'+m.d+'</div>';
-    html+='<div style="font-size:10px;color:var(--muted)">'+m.s+'</div>';
+    html+='<div class="mc-date">'+m.d.slice(0,6)+m.d.slice(-2)+'</div>';
     html+='<span class="fp '+fpc+'" style="font-size:10px;padding:2px 6px">'+(m.fc||'')+'</span>';
     html+='<div class="mc-exp">▾</div>';
     html+='</div>';
@@ -1061,8 +1060,7 @@ function renderGoals(){
     if(gmeta.length)html+='<div class="mc-meta">'+gmeta.map(function(p){return'<span class="mc-mi">'+p+'</span>';}).join('')+'</div>';
     html+='</div>';
     html+='<div class="mc-side">';
-    html+='<div class="mc-date">'+m.d+'</div>';
-    html+='<div style="font-size:10px;color:var(--muted)">'+m.s+'</div>';
+    html+='<div class="mc-date">'+m.d.slice(0,6)+m.d.slice(-2)+'</div>';
     html+='<span class="fp '+fpc+'" style="font-size:10px;padding:2px 6px">'+m.fc+'</span>';
     html+='<div class="mc-exp">▾</div>';
     html+='</div>';
@@ -1166,8 +1164,7 @@ function renderAssists(){
     if(ameta.length)html+='<div class="mc-meta">'+ameta.map(function(p){return'<span class="mc-mi">'+p+'</span>';}).join('')+'</div>';
     html+='</div>';
     html+='<div class="mc-side">';
-    html+='<div class="mc-date">'+m.d+'</div>';
-    html+='<div style="font-size:10px;color:var(--muted)">'+m.s+'</div>';
+    html+='<div class="mc-date">'+m.d.slice(0,6)+m.d.slice(-2)+'</div>';
     html+='<span class="fp '+fpc+'" style="font-size:10px;padding:2px 6px">'+m.fc+'</span>';
     html+='<div class="mc-exp">▾</div>';
     html+='</div>';
