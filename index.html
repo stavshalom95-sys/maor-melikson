@@ -886,11 +886,12 @@ function draw(){
     if(m.g||m.as){var ach='';if(m.g)ach+='⚽';if(m.as)ach+=' 🎯';metaParts.push(ach.trim());}
     if(metaParts.length)html+='<div class="mc-meta">'+metaParts.map(function(p){return'<span class="mc-mi">'+p+'</span>';}).join('')+'</div>';
     html+='</div>';
+    var fcShort=(m.fc||'').replace('גביע הטוטו','טוטו').replace('גביע המדינה','מדינה');
     html+='<div class="mc-side">';
     html+='<div class="mc-date">'+m.d.slice(0,6)+m.d.slice(-2)+'</div>';
     html+='<div style="font-size:10px;color:var(--muted2)">'+dayName(m.d)+'</div>';
-    html+='<span class="fp '+fpc+'" style="font-size:10px;padding:2px 6px">'+(m.fc||'')+'</span>';
     html+='<div class="mc-exp">▾</div>';
+    html+='<span class="fp '+fpc+'" style="font-size:10px;padding:2px 6px">'+fcShort+'</span>';
     html+='</div>';
     html+='</div>';
     html+='<div class="mc-detail" id="exp-'+rid+'">';
@@ -1061,11 +1062,12 @@ function renderGoals(){
     if(gk)gmeta.push('🧤 '+gk);
     if(gmeta.length)html+='<div class="mc-meta">'+gmeta.map(function(p){return'<span class="mc-mi">'+p+'</span>';}).join('')+'</div>';
     html+='</div>';
+    var fcShortG=(m.fc||'').replace('גביע הטוטו','טוטו').replace('גביע המדינה','מדינה');
     html+='<div class="mc-side">';
     html+='<div class="mc-date">'+m.d.slice(0,6)+m.d.slice(-2)+'</div>';
     html+='<div style="font-size:10px;color:var(--muted2)">'+dayName(m.d)+'</div>';
-    html+='<span class="fp '+fpc+'" style="font-size:10px;padding:2px 6px">'+m.fc+'</span>';
     html+='<div class="mc-exp">▾</div>';
+    html+='<span class="fp '+fpc+'" style="font-size:10px;padding:2px 6px">'+fcShortG+'</span>';
     html+='</div>';
     html+='</div>';
     html+='<div class="mc-detail" id="exp-'+gid+'">';
@@ -1166,11 +1168,12 @@ function renderAssists(){
     if(tgtsStr&&tgtsStr!=='—')ameta.push('🎯 '+tgtsStr);
     if(ameta.length)html+='<div class="mc-meta">'+ameta.map(function(p){return'<span class="mc-mi">'+p+'</span>';}).join('')+'</div>';
     html+='</div>';
+    var fcShortA=(m.fc||'').replace('גביע הטוטו','טוטו').replace('גביע המדינה','מדינה');
     html+='<div class="mc-side">';
     html+='<div class="mc-date">'+m.d.slice(0,6)+m.d.slice(-2)+'</div>';
     html+='<div style="font-size:10px;color:var(--muted2)">'+dayName(m.d)+'</div>';
-    html+='<span class="fp '+fpc+'" style="font-size:10px;padding:2px 6px">'+m.fc+'</span>';
     html+='<div class="mc-exp">▾</div>';
+    html+='<span class="fp '+fpc+'" style="font-size:10px;padding:2px 6px">'+fcShortA+'</span>';
     html+='</div>';
     html+='</div>';
     html+='<div class="mc-detail" id="exp-'+aid+'">';
