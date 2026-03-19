@@ -1158,8 +1158,8 @@ function renderGoals(){
     html+='<div class="mc-di"><div class="mc-dl">תחרות</div><div class="mc-dv">'+g.c+'</div></div>';
     html+='<div class="mc-di"><div class="mc-dl">קהל</div><div class="mc-dv">'+fans+'</div></div>';
     if(g.gk)html+='<div class="mc-di"><div class="mc-dl">🧤 שוער</div><div class="mc-dv" style="color:var(--muted2)">'+g.gk+'</div></div>';
-    if(g.c1)html+='<div class="mc-di"><div class="mc-dl">מאמן קבוצה 1</div><div class="mc-dv">'+g.c1+'</div></div>';
-    if(g.c2)html+='<div class="mc-di"><div class="mc-dl">מאמן קבוצה 2</div><div class="mc-dv">'+g.c2+'</div></div>';
+    if(g.c1)html+='<div class="mc-di"><div class="mc-dl">שופט</div><div class="mc-dv">'+g.c1+'</div></div>';
+    if(g.c2)html+='<div class="mc-di"><div class="mc-dl">מאמן</div><div class="mc-dv">'+g.c2+'</div></div>';
     html+='<div class="mc-di" style="grid-column:1/-1"><div class="mc-dl">📝 פרטי המשחק</div><div class="mc-dv" style="font-weight:400;color:var(--muted2)">'+g.gd+'</div></div>';
     if(hasYt)html+='<div class="mc-di" style="grid-column:1/-1"><div class="mc-dl">📺 וידאו</div><div class="mc-dv"><a href="'+g.yt+'" target="_blank" class="yt-btn-lg" onclick="event.stopPropagation()">צפה בשער ביוטיוב ➜</a></div></div>';
     html+='</div></div></div>';
